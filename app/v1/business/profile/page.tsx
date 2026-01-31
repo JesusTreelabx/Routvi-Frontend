@@ -43,14 +43,45 @@ export default function BusinessProfilePage() {
     const [saving, setSaving] = useState(false);
     const [data, setData] = useState<any>(null);
 
+
+    // Default structure to prevent crashes
+    const DEFAULT_DATA = {
+        menu: [],
+        name: "",
+        category: "",
+        priceRange: "",
+        description: "",
+        social: { instagram: "", facebook: "" },
+        contact: { phone: "", email: "", address: "" },
+        legal: { razonSocial: "", rfc: "", regimen: "", businessType: "" },
+        admin: { representative: "", position: "" },
+        hours: {},
+        vibes: [],
+        amenities: [],
+        promotions: []
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('/api/v1/business/profile');
-                const result = await response.json();
+                let result = await response.json();
+
+                // Merge with defaults to ensure robustness
+                result = {
+                    ...DEFAULT_DATA,
+                    ...result,
+                    social: { ...DEFAULT_DATA.social, ...(result.social || {}) },
+                    contact: { ...DEFAULT_DATA.contact, ...(result.contact || {}) },
+                    legal: { ...DEFAULT_DATA.legal, ...(result.legal || {}) },
+                    admin: { ...DEFAULT_DATA.admin, ...(result.admin || {}) },
+                    hours: { ...DEFAULT_DATA.hours, ...(result.hours || {}) }
+                };
+
                 setData(result);
             } catch (error) {
                 console.error("Error fetching profile:", error);
+                setData(DEFAULT_DATA);
             } finally {
                 setLoading(false);
             }

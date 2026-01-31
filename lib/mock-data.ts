@@ -4,21 +4,66 @@ import path from 'path';
 // Define the path to the JSON file for persistence
 const dataFilePath = path.join(process.cwd(), 'data', 'menu.json');
 
+const DEFAULT_BUSINESS_DATA = {
+    menu: [],
+    name: "Tu Negocio",
+    category: "Pizzería",
+    priceRange: "$$",
+    description: "Una breve descripción de tu negocio...",
+    social: {
+        instagram: "@tunegocio",
+        facebook: "/tunegocio"
+    },
+    contact: {
+        phone: "555-0000",
+        email: "hola@tunegocio.com",
+        address: "Calle Principal #123"
+    },
+    legal: {
+        razonSocial: "Tu Razón Social S.A. de C.V.",
+        rfc: "XAXX010101000",
+        regimen: "Persona Moral",
+        businessType: "Restaurante"
+    },
+    admin: {
+        representative: "Juan Pérez",
+        position: "Gerente"
+    },
+    hours: {
+        Lunes: { open: "09:00", close: "22:00" },
+        Martes: { open: "09:00", close: "22:00" },
+        Miércoles: { open: "09:00", close: "22:00" },
+        Jueves: { open: "09:00", close: "23:00" },
+        Viernes: { open: "09:00", close: "23:59" },
+        Sábado: { open: "10:00", close: "23:59" },
+        Domingo: { open: "10:00", close: "22:00" }
+    },
+    vibes: ["Familiar"],
+    amenities: ["WiFi Gratis", "Pet Friendly"],
+    promotions: []
+};
+
 // Helper function to read data from the JSON file
 function readData() {
     if (!fs.existsSync(dataFilePath)) {
-        // Initialize with an empty menu if the file doesn't exist
-        const initialData = { menu: [] };
+        // Initialize with default data if the file doesn't exist
         // Ensure the directory exists
         const dir = path.dirname(dataFilePath);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
-        fs.writeFileSync(dataFilePath, JSON.stringify(initialData, null, 2), 'utf-8');
-        return initialData;
+        fs.writeFileSync(dataFilePath, JSON.stringify(DEFAULT_BUSINESS_DATA, null, 2), 'utf-8');
+        return DEFAULT_BUSINESS_DATA;
     }
     const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
-    return JSON.parse(fileContent);
+    try {
+        const parsedData = JSON.parse(fileContent);
+        // Merge with default data to ensure all fields exist even if file is partial
+        return { ...DEFAULT_BUSINESS_DATA, ...parsedData };
+    } catch (e) {
+        // If file is corrupt, return default
+        return DEFAULT_BUSINESS_DATA;
+    }
 }
 
 // Helper function to write data to the JSON file
@@ -30,7 +75,6 @@ function writeData(data: any) {
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-// Exported object that mimics the previous structure but reads from file
 // Exported object that mimics the previous structure but reads from file
 export const businessData = {
     // Dynamic getters for all properties usually accessed
@@ -65,7 +109,5 @@ export function getMenu() {
 }
 
 export function saveMenu(menu: any[]) {
-    writeData({ menu });
+    writeData({ ...readData(), menu });
 }
-
-

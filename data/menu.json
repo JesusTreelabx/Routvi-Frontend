@@ -1,92 +1,129 @@
 {
   "menu": [
     {
-      "id": "cat_pizzas",
+      "id": "1769892316198",
       "category": "Pizzas",
       "products": [
         {
-          "id": "prod_md",
-          "name": "Masa delgada",
-          "description": "Pizza de masa delgada crujiente.",
-          "price": "$150",
-          "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=200&auto=format&fit=crop",
-          "available": true
-        },
-        {
-          "id": "prod_mn",
-          "name": "Masa normal",
-          "description": "Pizza clásica de masa tradicional.",
-          "price": "$150",
-          "image": "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?q=80&w=200&auto=format&fit=crop",
-          "available": true
-        },
-        {
-          "id": "prod_dd",
-          "name": "Pizza Chicago",
-          "description": "Estilo Chicago con bordes altos y mucho queso.",
-          "price": "$250",
-          "image": "/images/pizza-chicago.jpg",
+          "id": "1769893300456",
+          "name": "Pizza Pepperoni",
+          "description": "",
+          "price": "$0",
+          "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
           "available": true
         }
       ]
     },
     {
-      "id": "cat_entradas",
-      "category": "Entradas",
-      "products": [
-        {
-          "id": "prod_wings",
-          "name": "Spicy Wings",
-          "description": "Alitas de pollo crujientes bañadas en nuestra salsa picante especial.",
-          "price": "$120",
-          "image": "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=500&auto=format&fit=crop",
-          "available": true
-        }
-      ]
-    },
-    {
-      "id": "cat_bebidas",
+      "id": "1769892339338",
       "category": "Bebidas",
       "products": [
         {
-          "id": "prod_jugos",
-          "name": "Jugos",
-          "description": "Jugos naturales recién hechos.",
-          "price": "$40",
-          "image": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?q=80&w=200&auto=format&fit=crop",
+          "id": "1769893353988",
+          "name": "Jugo",
+          "description": "",
+          "price": "$0",
+          "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
           "available": true
         },
         {
-          "id": "prod_refrescos",
-          "name": "Refrescos",
-          "description": "Variedad de refrescos fríos.",
-          "price": "$35",
-          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=200&auto=format&fit=crop",
+          "id": "1769893383292",
+          "name": "Coca-Cola Zero",
+          "description": "",
+          "price": "$0",
+          "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
           "available": true
         }
       ]
     },
     {
-      "id": "cat_postre",
-      "category": "Pizza postre",
+      "id": "1769893019393",
+      "category": "Entradas",
       "products": [
         {
-          "id": "prod_qcf",
-          "name": "Queso crema y frutos",
-          "description": "Deliciosa pizza dulce con base de queso crema y frutos rojos.",
-          "price": "$180",
-          "image": "/images/pizza-frutos.jpg",
+          "id": "1769893440569",
+          "name": "Spicy Wings",
+          "description": "",
+          "price": "$0",
+          "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
           "available": true
-        },
+        }
+      ]
+    },
+    {
+      "id": "1769893036184",
+      "category": "Pizza Postre",
+      "products": [
         {
-          "id": "prod_nutella",
+          "id": "1769893315199",
           "name": "Pizza Nutella",
-          "description": "Irresistible pizza cubierta de Nutella, fresas frescas y azúcar glass.",
-          "price": "$200",
-          "image": "/images/pizza-nutella.jpg",
+          "description": "",
+          "price": "$0",
+          "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
           "available": true
         }
       ]
     }
-  ]
+  ],
+  "name": "Tu Negocio",
+  "category": "Pizzería",
+  "priceRange": "$$",
+  "description": "Una breve descripción de tu negocio...",
+  "social": {
+    "instagram": "@tunegocio",
+    "facebook": "/tunegocio"
+  },
+  "contact": {
+    "phone": "555-0000",
+    "email": "hola@tunegocio.com",
+    "address": "Calle Principal #123"
+  },
+  "legal": {
+    "razonSocial": "Tu Razón Social S.A. de C.V.",
+    "rfc": "XAXX010101000",
+    "regimen": "Persona Moral",
+    "businessType": "Restaurante"
+  },
+  "admin": {
+    "representative": "Juan Pérez",
+    "position": "Gerente"
+  },
+  "hours": {
+    "Lunes": {
+      "open": "09:00",
+      "close": "22:00"
+    },
+    "Martes": {
+      "open": "09:00",
+      "close": "22:00"
+    },
+    "Miércoles": {
+      "open": "09:00",
+      "close": "22:00"
+    },
+    "Jueves": {
+      "open": "09:00",
+      "close": "23:00"
+    },
+    "Viernes": {
+      "open": "09:00",
+      "close": "23:59"
+    },
+    "Sábado": {
+      "open": "10:00",
+      "close": "23:59"
+    },
+    "Domingo": {
+      "open": "10:00",
+      "close": "22:00"
+    }
+  },
+  "vibes": [
+    "Familiar"
+  ],
+  "amenities": [
+    "WiFi Gratis",
+    "Pet Friendly"
+  ],
+  "promotions": []
 }

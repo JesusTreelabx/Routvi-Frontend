@@ -175,7 +175,7 @@ export default function BusinessMenuCategoriesPage() {
                         ) : (
                             categories.map((cat) => (
                                 <Card key={cat.id} className="p-4 border-0 shadow-lg rounded-2xl bg-white flex items-center gap-4 group hover:ring-2 hover:ring-primary-100 transition-all">
-                                    <Link href={`/v1/business/menu/categories/${cat.id}`} className="p-3 bg-gray-50 rounded-xl hover:bg-primary-50 transition-colors">
+                                    <Link href="/v1/business/menu/products" className="p-3 bg-gray-50 rounded-xl hover:bg-primary-50 transition-colors">
                                         <Tag className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors" />
                                     </Link>
                                     <div className="flex-1">
@@ -191,7 +191,7 @@ export default function BusinessMenuCategoriesPage() {
                                                 placeholder="Nombre de la categoría"
                                             />
                                             <Link
-                                                href={`/v1/business/menu/categories/${cat.id}`}
+                                                href="/v1/business/menu/products"
                                                 className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded hover:bg-primary-100 transition-colors opacity-0 group-hover:opacity-100"
                                             >
                                                 Ver Productos

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { businessData } from '@/lib/mock-data';
+import { getMenu, saveMenu } from '@/lib/mock-data';
 
 export async function POST(request: Request) {
     try {
@@ -9,7 +9,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Categoría y nombre son obligatorios" }, { status: 400 });
         }
 
-        const category = businessData.menu.find((c: any) => c.id === categoryId);
+        const menu = getMenu();
+        const category = menu.find((c: any) => c.id === categoryId);
 
         if (!category) {
             return NextResponse.json({ error: "Categoría no encontrada" }, { status: 404 });
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
         };
 
         category.products.push(newProduct);
+        saveMenu(menu);
 
         return NextResponse.json({
             message: "Producto creado correctamente",
