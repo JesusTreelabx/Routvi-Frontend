@@ -175,20 +175,28 @@ export default function BusinessMenuCategoriesPage() {
                         ) : (
                             categories.map((cat) => (
                                 <Card key={cat.id} className="p-4 border-0 shadow-lg rounded-2xl bg-white flex items-center gap-4 group hover:ring-2 hover:ring-primary-100 transition-all">
-                                    <div className="p-3 bg-gray-50 rounded-xl">
-                                        <Tag className="w-5 h-5 text-gray-400" />
-                                    </div>
+                                    <Link href={`/v1/business/menu/categories/${cat.id}`} className="p-3 bg-gray-50 rounded-xl hover:bg-primary-50 transition-colors">
+                                        <Tag className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors" />
+                                    </Link>
                                     <div className="flex-1">
-                                        <input
-                                            defaultValue={cat.category}
-                                            onBlur={(e) => {
-                                                if (e.target.value !== cat.category) {
-                                                    updateCategoryName(cat.id, e.target.value);
-                                                }
-                                            }}
-                                            className="w-full bg-transparent border-0 font-bold text-gray-800 focus:ring-0 outline-none p-0 h-8"
-                                            placeholder="Nombre de la categoría"
-                                        />
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                defaultValue={cat.category}
+                                                onBlur={(e) => {
+                                                    if (e.target.value !== cat.category) {
+                                                        updateCategoryName(cat.id, e.target.value);
+                                                    }
+                                                }}
+                                                className="w-full bg-transparent border-0 font-bold text-gray-800 focus:ring-0 outline-none p-0 h-8"
+                                                placeholder="Nombre de la categoría"
+                                            />
+                                            <Link
+                                                href={`/v1/business/menu/categories/${cat.id}`}
+                                                className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded hover:bg-primary-100 transition-colors opacity-0 group-hover:opacity-100"
+                                            >
+                                                Ver Productos
+                                            </Link>
+                                        </div>
                                         <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">
                                             {cat.products.length} {cat.products.length === 1 ? 'Producto' : 'Productos'}
                                         </p>

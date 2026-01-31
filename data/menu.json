@@ -1,0 +1,92 @@
+{
+  "menu": [
+    {
+      "id": "cat_pizzas",
+      "category": "Pizzas",
+      "products": [
+        {
+          "id": "prod_md",
+          "name": "Masa delgada",
+          "description": "Pizza de masa delgada crujiente.",
+          "price": "$150",
+          "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=200&auto=format&fit=crop",
+          "available": true
+        },
+        {
+          "id": "prod_mn",
+          "name": "Masa normal",
+          "description": "Pizza clásica de masa tradicional.",
+          "price": "$150",
+          "image": "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?q=80&w=200&auto=format&fit=crop",
+          "available": true
+        },
+        {
+          "id": "prod_dd",
+          "name": "Pizza Chicago",
+          "description": "Estilo Chicago con bordes altos y mucho queso.",
+          "price": "$250",
+          "image": "/images/pizza-chicago.jpg",
+          "available": true
+        }
+      ]
+    },
+    {
+      "id": "cat_entradas",
+      "category": "Entradas",
+      "products": [
+        {
+          "id": "prod_wings",
+          "name": "Spicy Wings",
+          "description": "Alitas de pollo crujientes bañadas en nuestra salsa picante especial.",
+          "price": "$120",
+          "image": "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=500&auto=format&fit=crop",
+          "available": true
+        }
+      ]
+    },
+    {
+      "id": "cat_bebidas",
+      "category": "Bebidas",
+      "products": [
+        {
+          "id": "prod_jugos",
+          "name": "Jugos",
+          "description": "Jugos naturales recién hechos.",
+          "price": "$40",
+          "image": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?q=80&w=200&auto=format&fit=crop",
+          "available": true
+        },
+        {
+          "id": "prod_refrescos",
+          "name": "Refrescos",
+          "description": "Variedad de refrescos fríos.",
+          "price": "$35",
+          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=200&auto=format&fit=crop",
+          "available": true
+        }
+      ]
+    },
+    {
+      "id": "cat_postre",
+      "category": "Pizza postre",
+      "products": [
+        {
+          "id": "prod_qcf",
+          "name": "Queso crema y frutos",
+          "description": "Deliciosa pizza dulce con base de queso crema y frutos rojos.",
+          "price": "$180",
+          "image": "/images/pizza-frutos.jpg",
+          "available": true
+        },
+        {
+          "id": "prod_nutella",
+          "name": "Pizza Nutella",
+          "description": "Irresistible pizza cubierta de Nutella, fresas frescas y azúcar glass.",
+          "price": "$200",
+          "image": "/images/pizza-nutella.jpg",
+          "available": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,25 +1,27 @@
 import { NextResponse } from 'next/server';
-import { businessData } from '@/lib/mock-data';
+import { getMenu, saveMenu } from '@/lib/mock-data';
 
 export async function PUT(
     request: Request,
-    { params }: { params: { categoryId: string } }
+    { params }: { params: Promise<{ categoryId: string }> }
 ) {
     try {
-        const { categoryId } = params;
+        const { categoryId } = await params;
         const { name } = await request.json();
 
-        const categoryIndex = businessData.menu.findIndex((c: any) => c.id === categoryId);
+        const menu = getMenu();
+        const categoryIndex = menu.findIndex((c: any) => c.id === categoryId);
 
         if (categoryIndex === -1) {
             return NextResponse.json({ error: "Categoría no encontrada" }, { status: 404 });
         }
 
-        businessData.menu[categoryIndex].category = name;
+        menu[categoryIndex].category = name;
+        saveMenu(menu);
 
         return NextResponse.json({
             message: "Categoría actualizada correctamente",
-            data: businessData.menu[categoryIndex]
+            data: menu[categoryIndex]
         });
 
     } catch (error) {
@@ -29,18 +31,24 @@ export async function PUT(
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { categoryId: string } }
+    { params }: { params: Promise<{ categoryId: string }> }
 ) {
     try {
-        const { categoryId } = params;
+        const { categoryId } = await params;
 
-        const categoryIndex = businessData.menu.findIndex((c: any) => c.id === categoryId);
+        console.log(`Deleting category with ID: ${categoryId}`);
+        const menu = getMenu();
+        const categoryIndex = menu.findIndex((c: any) => c.id === categoryId);
 
         if (categoryIndex === -1) {
+            console.log("Category not found");
             return NextResponse.json({ error: "Categoría no encontrada" }, { status: 404 });
         }
 
-        businessData.menu.splice(categoryIndex, 1);
+        console.log(`Found category at index ${categoryIndex}, deleting...`);
+        menu.splice(categoryIndex, 1);
+        saveMenu(menu);
+        console.log("Category deleted and saved.");
 
         return NextResponse.json({
             message: "Categoría eliminada correctamente"

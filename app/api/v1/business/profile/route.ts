@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { businessData, updateBusinessData } from '@/lib/mock-data';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
-    return NextResponse.json(businessData);
+    return NextResponse.json(businessData.toJSON());
 }
 
 export async function PUT(request: Request) {
