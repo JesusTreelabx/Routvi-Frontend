@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { businessData, updateBusinessData } from '@/lib/mock-data';
+import { businessData, updateBusinessData, updateTopPromosSnapshot } from '@/lib/mock-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,6 +23,7 @@ export async function PUT(
         currentPromos[index] = updatedPromo;
 
         updateBusinessData({ promotions: currentPromos });
+        updateTopPromosSnapshot();
 
         return NextResponse.json({
             message: "Promoción actualizada correctamente",
@@ -49,6 +50,7 @@ export async function DELETE(
         }
 
         updateBusinessData({ promotions: newPromos });
+        updateTopPromosSnapshot();
 
         return NextResponse.json({
             message: "Promoción eliminada correctamente"

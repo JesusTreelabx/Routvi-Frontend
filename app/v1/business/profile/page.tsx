@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { useState, useEffect } from 'react';
 import {
     Camera,
@@ -12,6 +14,7 @@ import {
     ExternalLink,
     Instagram,
     Facebook,
+    Edit2,
     CheckCircle2,
     Plus,
     Trash2,
@@ -140,6 +143,14 @@ export default function BusinessProfilePage() {
                 const result = await response.json();
                 const newData = { ...data, menu: [...data.menu, result.data] };
                 setData(newData);
+
+                // Auto-scroll to new category
+                setTimeout(() => {
+                    const element = document.getElementById(`category-${result.data.id}`);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100);
             }
         } catch (error) {
             console.error("Error adding category:", error);
@@ -173,33 +184,7 @@ export default function BusinessProfilePage() {
         }
     };
 
-    // --- Product Actions ---
-    const addProduct = async (categoryId: string) => {
-        try {
-            const response = await fetch('/api/v1/business/menu/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    categoryId,
-                    name: 'Nuevo Producto',
-                    price: '$0',
-                    description: 'Descripción del producto'
-                })
-            });
-            if (response.ok) {
-                const result = await response.json();
-                const newMenu = data.menu.map((cat: any) => {
-                    if (cat.id === categoryId) {
-                        return { ...cat, products: [...cat.products, result.data] };
-                    }
-                    return cat;
-                });
-                setData({ ...data, menu: newMenu });
-            }
-        } catch (error) {
-            console.error("Error adding product:", error);
-        }
-    };
+
 
     const updateProduct = async (productId: string, updates: any) => {
         try {
@@ -246,14 +231,22 @@ export default function BusinessProfilePage() {
                             Gestiona cómo ven los clientes tu negocio en Routvi.
                         </p>
                     </div>
-                    <Button
-                        onClick={() => handleSave()}
-                        disabled={saving}
-                        className="bg-primary-600 hover:bg-primary-700 text-white shadow-lg gap-2 px-6 h-12 rounded-xl transition-all active:scale-95 disabled:opacity-70"
-                    >
-                        {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : saved ? <CheckCircle2 className="w-5 h-5" /> : <Save className="w-5 h-5" />}
-                        {saving ? 'Guardando...' : saved ? 'Guardado' : 'Guardar Cambios'}
-                    </Button>
+                    <div className="flex gap-3">
+                        <Link href="/v1/business/promotions">
+                            <Button className="bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 shadow-sm gap-2 px-6 h-12 rounded-xl transition-all active:scale-95">
+                                <Tag className="w-5 h-5" />
+                                Promociones
+                            </Button>
+                        </Link>
+                        <Button
+                            onClick={() => handleSave()}
+                            disabled={saving}
+                            className="bg-primary-600 hover:bg-primary-700 text-white shadow-lg gap-2 px-6 h-12 rounded-xl transition-all active:scale-95 disabled:opacity-70"
+                        >
+                            {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : saved ? <CheckCircle2 className="w-5 h-5" /> : <Save className="w-5 h-5" />}
+                            {saving ? 'Guardando...' : saved ? 'Guardado' : 'Guardar Cambios'}
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -399,9 +392,9 @@ export default function BusinessProfilePage() {
                             </div>
                             <div className="flex flex-col gap-6">
                                 {data.menu.map((cat: any, cIdx: number) => (
-                                    <Card key={cat.id || cIdx} className="p-0 border-0 shadow-lg rounded-2xl bg-white overflow-hidden">
+                                    <Card id={`category-${cat.id}`} key={cat.id || cIdx} className="p-0 border-0 shadow-lg rounded-2xl bg-white overflow-hidden">
                                         <div className="bg-emerald-700 p-4 flex items-center justify-between">
-                                            <div className="flex-1">
+                                            <div className="flex-1 flex items-center gap-2 group/title">
                                                 <input
                                                     value={cat.category}
                                                     onChange={(e) => {
@@ -410,10 +403,11 @@ export default function BusinessProfilePage() {
                                                         setData({ ...data, menu: newMenu });
                                                     }}
                                                     onBlur={(e) => updateCategoryName(cat.id, e.target.value)}
-                                                    className="bg-transparent border-0 font-bold text-white uppercase tracking-wider focus:ring-0 outline-none w-full"
+                                                    className="bg-transparent border-0 font-bold text-white uppercase tracking-wider focus:ring-0 outline-none w-full cursor-pointer hover:bg-white/10 rounded px-2 -ml-2 transition-colors"
                                                 />
+                                                <Edit2 className="w-4 h-4 text-white/50 group-hover/title:text-white transition-colors" />
                                             </div>
-                                            <Trash2 onClick={() => deleteCategory(cat.id)} className="w-4 h-4 text-white/80 cursor-pointer hover:text-white ml-4" />
+                                            <Trash2 onClick={() => deleteCategory(cat.id)} className="w-4 h-4 text-white/80 cursor-pointer hover:text-white ml-4 flex-shrink-0" />
                                         </div>
                                         <div className="p-5 flex flex-col gap-4">
                                             {cat.products.map((prod: any, pIdx: number) => (
@@ -480,7 +474,11 @@ export default function BusinessProfilePage() {
                                                     <Trash2 onClick={() => deleteProduct(prod.id, cat.id)} className="absolute top-2 right-2 w-4 h-4 text-gray-300 hover:text-red-500 cursor-pointer transition-colors" />
                                                 </div>
                                             ))}
-                                            <button onClick={() => addProduct(cat.id)} className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-semibold hover:border-emerald-300 hover:text-emerald-500 transition-all flex items-center justify-center gap-2 mt-2"><Plus className="w-4 h-4" />Agregar Producto</button>
+                                            <Link href="/v1/business/menu/products" className="w-full">
+                                                <button className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-semibold hover:border-emerald-300 hover:text-emerald-500 transition-all flex items-center justify-center gap-2 mt-2">
+                                                    <Plus className="w-4 h-4" />Agregar Producto
+                                                </button>
+                                            </Link>
                                         </div>
                                     </Card>
                                 ))}

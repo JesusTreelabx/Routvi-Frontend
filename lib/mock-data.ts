@@ -91,6 +91,7 @@ export const businessData = {
     get vibes() { return readData().vibes; },
     get amenities() { return readData().amenities; },
     get promotions() { return readData().promotions || []; },
+    get topPromos() { return readData().topPromos || []; },
 
     // Setter for full update
     toJSON() { return readData(); }
@@ -101,6 +102,28 @@ export function updateBusinessData(updates: any) {
     const newData = { ...current, ...updates };
     writeData(newData);
     return newData;
+}
+
+// Helper to update the topPromos snapshot based on active promotions
+export function updateTopPromosSnapshot() {
+    const current = readData();
+    const allPromos = current.promotions || [];
+    // Filter active promotions
+    const activePromos = allPromos.filter((p: any) => p.active);
+
+    // Validate expiry dates to ensure we don't snapshot expired ones
+    const now = new Date();
+    const validPromos = activePromos.filter((p: any) => {
+        if (!p.expiryDate) return true;
+        const expiry = new Date(p.expiryDate);
+        return expiry >= now;
+    });
+
+    // Take top 5 and update snapshot
+    const top5 = validPromos.slice(0, 5);
+    const newData = { ...current, topPromos: top5 };
+    writeData(newData);
+    return top5;
 }
 
 // Export helper functions for direct access in API routes

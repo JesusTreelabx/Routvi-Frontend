@@ -43,3 +43,47 @@ Se utiliza un archivo JSON local (`data/menu.json`) para simular una base de dat
 - **React Hooks (useState, useEffect):** Para la gestión del estado en el frontend.
 - **Lucide React:** Para los iconos de la interfaz.
 - **Tailwind CSS:** Para el diseño responsivo y moderno.
+
+## 5. Mejoras de Experiencia de Usuario (UI/UX) - Perfil y Promociones
+
+Se implementó un conjunto de mejoras visuales y funcionales en la vista de perfil del negocio (`/v1/business/profile`) para agilizar el flujo de trabajo.
+
+### A. Mejoras en la Gestión de Menú
+
+#### 1. Redirección Inteligente de Productos
+**Antes:**
+El botón "+ Agregar Producto" en las tarjetas de categoría ejecutaba una función interna obsoleta, creando productos vacíos.
+
+**Ahora:**
+Al hacer clic en el botón **"+ Agregar Producto"**, el sistema redirige automáticamente al usuario a la vista dedicada de gestión de productos:
+`http://localhost:3010/v1/business/menu/products`
+
+Esto centraliza la creación de productos en una interfaz más robusta y evita la creación de registros vacíos accidentales.
+
+#### 2. Auto-focus en Nueva Categoría
+**Antes:**
+Al crear una nueva categoría, esta aparecía al final de la lista, pero el usuario tenía que hacer scroll manualmente para encontrarla.
+
+**Ahora:**
+Se implementó una lógica de **Auto-scroll**. Al hacer clic en "+ Nueva Categoría":
+1.  La categoría se crea.
+2.  La página se desplaza suavemente (*smooth scroll*) hasta la posición de la nueva tarjeta creada.
+3.  Esto proporciona retroalimentación visual inmediata de que la acción fue exitosa.
+
+#### 3. Indicador Visual de Edición
+**Antes:**
+El nombre de la categoría era un campo de texto plano, y no era obvio para el usuario que podía editarlo haciendo clic sobre él.
+
+**Ahora:**
+Se añadió un **icono de lápiz (Edit Icon)** junto al nombre de cada categoría (ej. "PIZZAS", "BEBIDAS").
+-   El icono refuerza la affordance (capacidad de interacción) del elemento.
+-   Se añadió un efecto *hover* para resaltar que el campo es editable.
+
+### B. Integración de Promociones
+
+#### Acceso Rápido desde Perfil
+Para mejorar la navegación entre las secciones críticas del negocio:
+-   Se añadió un botón dedicado **"Promociones"** en el encabezado del Perfil de Negocio.
+-   Ubicado estratégicamente junto al botón de "Guardar".
+-   Diseñado con un esquema de color índigo para diferenciarse de las acciones de guardado, pero manteniendo la coherencia visual.
+-   Redirige directamente a `http://localhost:3010/v1/business/promotions`.

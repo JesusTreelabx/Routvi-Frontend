@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { businessData, updateBusinessData } from '@/lib/mock-data';
+import { businessData, updateBusinessData, updateTopPromosSnapshot } from '@/lib/mock-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +30,9 @@ export async function POST(request: Request) {
 
         const currentPromos = businessData.promotions;
         updateBusinessData({ promotions: [...currentPromos, newPromo] });
+
+        // Update snapshot
+        updateTopPromosSnapshot();
 
         return NextResponse.json({
             message: "Promoción creada correctamente",
