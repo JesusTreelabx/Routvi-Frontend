@@ -16,7 +16,9 @@ import {
     Image as ImageIcon,
     Loader2,
     CheckCircle2,
-    XCircle
+    XCircle,
+    Upload,
+    Download
 } from 'lucide-react';
 
 export default function ProductsPage() {
@@ -193,7 +195,11 @@ export default function ProductsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            <Header />
+            <Header settingsOptions={[
+                { label: 'Importar CSV', onClick: () => alert('Importar'), icon: Upload },
+                { label: 'Exportar Menú', onClick: () => alert('Exportar'), icon: Download },
+                { label: 'Edición Masiva', onClick: () => alert('Bulk Edit'), icon: Edit2 }
+            ]} />
 
             <main className="flex-1 container mx-auto max-w-6xl px-4 py-8">
                 {/* Page Header */}
@@ -202,7 +208,7 @@ export default function ProductsPage() {
                         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Productos</h1>
                         <p className="text-gray-600 mt-1">Administra el catálogo de productos de tu menú.</p>
                     </div>
-                    <Button onClick={openCreateModal} className="bg-primary-600 hover:bg-primary-700 text-white shadow-lg gap-2 px-6 h-12 rounded-xl">
+                    <Button onClick={openCreateModal} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg gap-2 px-6 h-12 rounded-xl">
                         <Plus className="w-5 h-5" /> Nuevo Producto
                     </Button>
                 </div>
@@ -215,7 +221,7 @@ export default function ProductsPage() {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Buscar producto..."
-                            className="w-full pl-10 h-10 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none"
+                            className="w-full pl-10 h-10 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                         />
                     </div>
                     <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
@@ -224,7 +230,7 @@ export default function ProductsPage() {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setSelectedCategory('all')}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === 'all' ? 'bg-primary-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === 'all' ? 'bg-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                             >
                                 Todos
                             </button>
@@ -232,7 +238,7 @@ export default function ProductsPage() {
                                 <button
                                     key={cat.id}
                                     onClick={() => setSelectedCategory(cat.id)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === cat.id ? 'bg-primary-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === cat.id ? 'bg-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                                 >
                                     {cat.category}
                                 </button>
@@ -244,7 +250,7 @@ export default function ProductsPage() {
                 {/* Products Grid */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-10 h-10 text-primary-600 animate-spin" />
+                        <Loader2 className="w-10 h-10 text-emerald-600 animate-spin" />
                     </div>
                 ) : filteredProducts.length === 0 ? (
                     <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100">
@@ -267,7 +273,7 @@ export default function ProductsPage() {
                                         </div>
                                     )}
                                     <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
-                                        <button onClick={() => openEditModal(product)} className="p-2 bg-white/90 backdrop-blur rounded-full shadow-sm hover:bg-primary-50 text-primary-600 hover:scale-110 transition-all">
+                                        <button onClick={() => openEditModal(product)} className="p-2 bg-white/90 backdrop-blur rounded-full shadow-sm hover:bg-emerald-50 text-emerald-600 hover:scale-110 transition-all">
                                             <Edit2 className="w-4 h-4" />
                                         </button>
                                         <button onClick={() => handleDelete(product.id)} className="p-2 bg-white/90 backdrop-blur rounded-full shadow-sm hover:bg-red-50 text-red-500 hover:scale-110 transition-all">
@@ -275,7 +281,7 @@ export default function ProductsPage() {
                                         </button>
                                     </div>
                                     <div className="absolute top-3 left-3">
-                                        <Badge className="bg-white/90 backdrop-blur text-gray-800 shadow-sm text-xs font-bold border-0">
+                                        <Badge className="bg-emerald-600 text-white shadow-md text-xs font-bold border-0 px-3 py-1">
                                             {product.categoryName}
                                         </Badge>
                                     </div>

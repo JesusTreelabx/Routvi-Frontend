@@ -66,23 +66,37 @@
     },
     {
       "id": "1770138006921",
-      "category": "Nueva Categoría ensalada",
+      "category": "Ensalada",
       "products": [
         {
           "id": "1770138048644",
-          "name": "cesar",
+          "name": "Cesar",
           "description": "",
           "price": "$0",
           "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
           "available": true
         }
       ]
+    },
+    {
+      "id": "1770219804804",
+      "category": "Pasta",
+      "products": [
+        {
+          "id": "1770219905919",
+          "name": "Pasta Italiana",
+          "description": "",
+          "price": "$0",
+          "image": "https://mercadoventas.es/wp-content/uploads/2024/09/receta-de-pasta.jpg",
+          "available": true
+        }
+      ]
     }
   ],
-  "name": "Tu Negocio",
+  "name": "Proper Pizza Chicago",
   "category": "Pizzería",
   "priceRange": "$$",
-  "description": "Una breve descripción de tu negocio...",
+  "description": "En Proper Pizza, cada bocado es un pasaporte a un sabor rico. Nuestras recetas artesanales combinan técnicas europeas tradicionales con un toque moderno, creando pizzas audaces, equilibradas e inolvidables. Desde nuestra masa perfectamente madurada hasta nuestras salsas exclusivas y combinaciones únicas de ingredientes, nos centramos en la calidad, la creatividad y la autenticidad. No es solo pizza, es una experiencia de sabor perfeccionada en todos los continentes.",
   "social": {
     "instagram": "@tunegocio",
     "facebook": "/tunegocio"
@@ -147,7 +161,7 @@
       "code": "MARTES2X1",
       "discount": "50",
       "expiryDate": "2027-01-01",
-      "active": true
+      "active": false
     },
     {
       "id": "promo_1770137010420",
@@ -156,26 +170,35 @@
       "code": "MIERCOLESDEAMIGOS",
       "discount": "20",
       "expiryDate": "2027-01-01",
+      "active": true
+    },
+    {
+      "id": "promo_1770217556128",
+      "title": "3 Coca-Cola + Jugo",
+      "description": "Miercoles llevate 3 Coca-Cola + Jugo gratis. Unicamente aplica en Miercoles.",
+      "code": "JUGOGRATIS",
+      "discount": "99",
+      "expiryDate": "2026-03-11",
       "active": true
     }
   ],
   "topPromos": [
     {
-      "id": "promo_1770136719269",
-      "title": "Martes 2x1 Pizza grande",
-      "description": "2x1 en Pizza Grande todos los martes",
-      "code": "MARTES2X1",
-      "discount": "50",
-      "expiryDate": "2027-01-01",
-      "active": true
-    },
-    {
       "id": "promo_1770137010420",
       "title": "Miercoles Spicy Wings",
       "description": "Miercoles de Spicy Wings con 20% de descuento\n\n",
       "code": "MIERCOLESDEAMIGOS",
       "discount": "20",
       "expiryDate": "2027-01-01",
+      "active": true
+    },
+    {
+      "id": "promo_1770217556128",
+      "title": "3 Coca-Cola + Jugo",
+      "description": "Miercoles llevate 3 Coca-Cola + Jugo gratis. Unicamente aplica en Miercoles.",
+      "code": "JUGOGRATIS",
+      "discount": "99",
+      "expiryDate": "2026-03-11",
       "active": true
     }
   ]

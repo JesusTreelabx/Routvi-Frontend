@@ -32,7 +32,12 @@ import {
     User,
     Briefcase,
     Fingerprint,
-    Loader2
+    Loader2,
+    ArrowRight,
+    Eye,
+    QrCode,
+    Settings,
+    Share2
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -219,7 +224,12 @@ export default function BusinessProfilePage() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            <Header />
+            <Header settingsOptions={[
+                { label: 'Vista Previa', onClick: () => alert('Vista previa del perfil'), icon: Eye },
+                { label: 'Compartir Perfil', onClick: () => alert('Compartir'), icon: Share2 },
+                { label: 'Generar QR', onClick: () => alert('QR Code'), icon: QrCode },
+                { label: 'Configuración Avanzada', onClick: () => alert('Settings'), icon: Settings }
+            ]} />
 
             <main className="flex-1 container mx-auto max-w-5xl px-4 py-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -253,28 +263,28 @@ export default function BusinessProfilePage() {
                     <div className="lg:col-span-1 flex flex-col gap-6">
                         <Card className="p-0 overflow-hidden border-2 border-white shadow-xl rounded-2xl">
                             <div className="relative h-32 bg-primary-100">
-                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop" className="w-full h-full object-cover opacity-60" alt="Cover" />
+                                <img src="https://scontent.fbjx1-3.fna.fbcdn.net/v/t39.30808-6/336913052_122043387483732_3628439591084921623_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=S7Q-EUSS_P0Q7kNvwFJumim&_nc_oc=Adl3bgo0HSN3tbV5QiOoOhHtjJUDHC-qJDoCnc4HXAC-bm6HyYYN0uayez0fAz5yl66k70Nwv0d_8FGk6R_elIdI&_nc_zt=23&_nc_ht=scontent.fbjx1-3.fna&_nc_gid=iD-nsayfWaj35mP_J2x-qQ&oh=00_Aftq_jcB3tMIihsPHe6sop9IK1cHlwe7ZIRTO20UTTa3ew&oe=69892811" className="w-full h-full object-cover opacity-60" alt="Cover" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                                 <button className="absolute bottom-2 right-2 p-2 bg-white/90 backdrop-blur rounded-full shadow-md hover:bg-white transition-colors">
                                     <Camera className="w-4 h-4 text-primary-600" />
                                 </button>
                             </div>
-                            <div className="px-6 pb-6 relative">
-                                <div className="absolute -top-10 left-6">
+                            <div className="px-6 pb-6 relative pt-16">
+                                <div className="absolute -top-12 left-6">
                                     <div className="relative">
-                                        <div className="w-20 h-20 rounded-2xl bg-white p-1 shadow-2xl border-2 border-white overflow-hidden">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" className="w-full h-full object-cover" alt="Logo" />
+                                        <div className="w-24 h-24 rounded-2xl bg-white p-1 shadow-xl border-4 border-white overflow-hidden">
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd-r7RCP_wrYF-iYer-DJxDs8tahNSMX_CvA&s" className="w-full h-full object-cover" alt="Logo" />
                                         </div>
-                                        <button className="absolute -bottom-1 -right-1 p-1.5 bg-primary-600 rounded-full text-white shadow-md border-2 border-white hover:bg-primary-700">
-                                            <Camera className="w-3 h-3" />
+                                        <button className="absolute -bottom-1 -right-1 p-1.5 bg-primary-600 rounded-full text-white shadow-md border-2 border-white hover:bg-primary-700 transition-colors">
+                                            <Camera className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
-                                <div className="mt-12">
-                                    <h2 className="text-xl font-bold text-gray-900">{data.name}</h2>
-                                    <p className="text-sm text-gray-500">{data.category}</p>
-                                    <div className="mt-3 flex gap-2">
-                                        <Badge className="bg-primary-100 text-primary-700 border-primary-200">Suscripción Pro</Badge>
+                                <div className="mt-2">
+                                    <h2 className="text-2xl font-bold text-gray-900 leading-tight">{data.name}</h2>
+                                    <p className="text-sm font-medium text-gray-500 mt-1">{data.category}</p>
+                                    <div className="mt-4 flex gap-2">
+                                        <Badge className="bg-emerald-100 text-emerald-700 border-none font-bold px-3 py-1">Suscripción Pro</Badge>
                                     </div>
                                 </div>
                             </div>
@@ -403,7 +413,7 @@ export default function BusinessProfilePage() {
                                                         setData({ ...data, menu: newMenu });
                                                     }}
                                                     onBlur={(e) => updateCategoryName(cat.id, e.target.value)}
-                                                    className="bg-transparent border-0 font-bold text-white uppercase tracking-wider focus:ring-0 outline-none w-full cursor-pointer hover:bg-white/10 rounded px-2 -ml-2 transition-colors"
+                                                    className="bg-transparent border-0 font-bold text-white tracking-wider focus:ring-0 outline-none w-full cursor-pointer hover:bg-white/10 rounded px-2 -ml-2 transition-colors"
                                                 />
                                                 <Edit2 className="w-4 h-4 text-white/50 group-hover/title:text-white transition-colors" />
                                             </div>
@@ -487,13 +497,76 @@ export default function BusinessProfilePage() {
 
                         <section>
                             <div className="flex items-center gap-2 mb-4">
-                                <div className="p-2 bg-blue-100 rounded-lg"><Phone className="w-5 h-5 text-blue-700" /></div>
-                                <h3 className="text-xl font-bold text-gray-900 italic">Contacto y Ubicación</h3>
+                                <div className="p-2 bg-blue-100 rounded-lg"><MapPin className="w-5 h-5 text-blue-700" /></div>
+                                <h3 className="text-xl font-bold text-gray-900 italic">Ubicación y Contacto</h3>
                             </div>
-                            <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div><label className="block text-sm font-semibold text-gray-700 mb-2">WhatsApp</label><Input value={data.contact.phone} onChange={(e) => updateField('contact.phone', e.target.value)} className="h-12 bg-gray-50" /></div>
-                                <div><label className="block text-sm font-semibold text-gray-700 mb-2">Email</label><Input value={data.contact.email} onChange={(e) => updateField('contact.email', e.target.value)} className="h-12 bg-gray-50" /></div>
-                                <div className="md:col-span-2"><label className="block text-sm font-semibold text-gray-700 mb-2">Dirección</label><Input value={data.contact.address} onChange={(e) => updateField('contact.address', e.target.value)} className="h-12 bg-gray-50" /></div>
+
+                            <Card className="p-0 border-0 shadow-lg rounded-3xl bg-white overflow-hidden flex flex-col md:flex-row">
+                                {/* Map Section */}
+                                <div className="w-full md:w-1/3 min-h-[250px] bg-gray-100 relative">
+                                    <img
+                                        src="https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg"
+                                        className="w-full h-full object-cover opacity-80"
+                                        alt="Mapa"
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <MapPin className="w-12 h-12 text-red-600 drop-shadow-lg -translate-y-6" fill="currentColor" />
+                                    </div>
+                                </div>
+
+                                {/* Info Section */}
+                                <div className="w-full md:w-2/3 p-8 flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div>
+                                                <p className="text-gray-500 font-medium mb-1">{data.name}</p>
+                                                <h2 className="text-3xl font-bold text-gray-900 leading-none">Ciudad de México, MX</h2>
+                                            </div>
+                                            <Button variant="outline" className="rounded-full border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold gap-2">
+                                                Cómo llegar <ExternalLink className="w-4 h-4" />
+                                            </Button>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                            <div>
+                                                <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-3">Dirección</h4>
+                                                <Input
+                                                    value={data.contact.address}
+                                                    onChange={(e) => updateField('contact.address', e.target.value)}
+                                                    className="h-auto py-0 px-0 bg-transparent border-0 rounded-none border-b border-dashed border-gray-300 focus:border-blue-500 focus:ring-0 text-lg font-medium text-gray-800 placeholder-gray-300 w-full"
+                                                    placeholder="Ingresa la dirección..."
+                                                />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-3">Contactos</h4>
+                                                <div className="space-y-2">
+                                                    <Input
+                                                        value={data.contact.phone}
+                                                        onChange={(e) => updateField('contact.phone', e.target.value)}
+                                                        className="h-auto py-0 px-0 bg-transparent border-0 rounded-none border-b border-dashed border-gray-300 focus:border-blue-500 focus:ring-0 text-lg font-medium text-gray-800 placeholder-gray-300 w-full"
+                                                        placeholder="Teléfono..."
+                                                    />
+                                                    <Input
+                                                        value={data.contact.email}
+                                                        onChange={(e) => updateField('contact.email', e.target.value)}
+                                                        className="h-auto py-0 px-0 bg-transparent border-0 rounded-none border-b border-dashed border-gray-300 focus:border-blue-500 focus:ring-0 text-sm text-gray-600 placeholder-gray-300 w-full"
+                                                        placeholder="Email..."
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                        <div className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                                            <span className="font-bold text-gray-900">Hoy:</span>
+                                            11:00 AM - 11:00 PM
+                                            <span className="text-blue-600 cursor-pointer hover:underline text-xs flex items-center gap-1 ml-2">
+                                                Ver horarios <ArrowRight className="w-3 h-3" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </Card>
                         </section>
 

@@ -8,7 +8,7 @@ import QuickFilters from '@/components/home/QuickFilters';
 import BusinessCard from '@/components/home/BusinessCard';
 import VibeSection from '@/components/home/VibeSection';
 import { getHomeFeed, type Business } from '@/lib/api';
-import { MapPin, Sparkles, Zap } from 'lucide-react';
+import { MapPin, Sparkles, Zap, Tag, X, Store } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export default function Home() {
@@ -20,6 +20,9 @@ export default function Home() {
     promoNow: false,
   });
   const [location, setLocation] = useState<{ lat: number, lng: number } | null>(null);
+  const [showPromoModal, setShowPromoModal] = useState(false);
+  const [activePromos, setActivePromos] = useState<any[]>([]);
+  const [businessName, setBusinessName] = useState("");
 
   // Initial load
   useEffect(() => {
@@ -158,12 +161,104 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Floating Savings Counter (Example) */}
-      <div className="fixed bottom-24 right-4 z-40 animate-bounce">
+      {/* Floating Savings Counter */}
+      <button
+        onClick={() => {
+          const fetchPromos = async () => {
+            try {
+              // Fetch Promos
+              const res = await fetch('/api/v1/business/promotions');
+              const data = await res.json();
+              if (data.data) {
+                setActivePromos(data.data.filter((p: any) => p.active));
+              }
+
+              // Fetch Business Name
+              const profileRes = await fetch('/api/v1/business/profile');
+              const profileData = await profileRes.json();
+              setBusinessName(profileData.name || "Tu Negocio");
+
+            } catch (e) {
+              console.error(e);
+            }
+            setShowPromoModal(true);
+          };
+          fetchPromos();
+        }}
+        className="fixed bottom-24 right-4 z-40 animate-bounce cursor-pointer hover:scale-105 transition-transform"
+      >
         <div className="bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
           💸 15 promos activas
         </div>
-      </div>
+      </button>
+
+      {/* Active Promos Modal */}
+      {
+        showPromoModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95">
+              <div className="bg-orange-500 p-6 text-white flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-bold flex items-center gap-2">
+                    <Tag className="w-6 h-6" />
+                    Promos Activas
+                  </h3>
+                  <p className="text-orange-100 font-medium capitalize mt-1">
+                    {new Date().toLocaleDateString('es-ES', { weekday: 'long' })}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowPromoModal(false)}
+                  className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 max-h-[60vh] overflow-y-auto space-y-4">
+                {activePromos.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    No tienes promociones activas hoy.
+                  </div>
+                ) : (
+                  activePromos.map((promo: any) => (
+                    <div key={promo.id} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden group hover:border-orange-200 transition-colors">
+                      <div className="absolute top-0 left-0 w-1 h-full bg-orange-500" />
+
+                      {/* Business Name */}
+                      <div className="flex items-center gap-1.5 mb-2 text-gray-500">
+                        <Store className="w-3 h-3" />
+                        <span className="text-xs font-bold uppercase tracking-wider">{businessName}</span>
+                      </div>
+
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">
+                          {promo.code}
+                        </span>
+                        <span className="text-emerald-600 font-bold text-sm">
+                          {promo.discount} OFF
+                        </span>
+                      </div>
+                      <h4 className="font-bold text-gray-900 mb-1">{promo.title}</h4>
+                      <p className="text-sm text-gray-500 line-clamp-2">{promo.description}</p>
+                      <div className="mt-3 text-xs text-gray-400 flex items-center justify-end gap-1">
+                        Expira: {new Date(promo.expiryDate).toLocaleDateString()}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="p-4 bg-gray-50 border-t border-gray-100 text-center">
+                <Button onClick={() => setShowPromoModal(false)} className="w-full bg-gray-900 text-white rounded-xl">
+                  Cerrar
+                </Button>
+              </div>
+            </div>
+          </div>
+        )
+      }
+
     </div>
   );
 }

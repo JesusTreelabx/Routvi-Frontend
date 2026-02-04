@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
-import { Plus, Tag, Calendar, Edit2, Trash2, X, Save, Percent, Loader2, Megaphone } from 'lucide-react';
+import { Plus, Tag, Calendar, Edit2, Trash2, X, Save, Percent, Loader2, Megaphone, History } from 'lucide-react';
 
 interface Promotion {
     id: string;
@@ -147,7 +147,10 @@ export default function PromotionsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            <Header />
+            <Header settingsOptions={[
+                { label: 'Nueva Promoción', onClick: () => handleOpenModal(), icon: Plus },
+                { label: 'Historial', onClick: () => alert('Historial'), icon: History }
+            ]} />
 
             <main className="flex-1 container mx-auto max-w-5xl px-4 py-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
