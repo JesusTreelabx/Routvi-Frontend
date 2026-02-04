@@ -12,7 +12,10 @@ import {
     CheckCircle2,
     Save,
     Edit2,
-    ArrowUpDown
+    ArrowUpDown,
+    Menu as MenuIcon,
+    PlusCircle,
+    Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -187,75 +190,100 @@ export default function BusinessMenuCategoriesPage() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-8">
                     {/* Categories List */}
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="p-2 bg-emerald-100 rounded-lg"><LayoutGrid className="w-5 h-5 text-emerald-700" /></div>
-                            <h3 className="text-xl font-bold text-gray-900 italic">Tus Categorías</h3>
+                    {categories.length === 0 ? (
+                        <div className="text-center py-12 bg-white rounded-2xl border-2 border-dashed border-gray-100 italic text-gray-400">
+                            Aún no has creado ninguna categoría.
                         </div>
-
-                        {categories.length === 0 ? (
-                            <div className="text-center py-12 bg-white rounded-2xl border-2 border-dashed border-gray-100 italic text-gray-400">
-                                Aún no has creado ninguna categoría.
-                            </div>
-                        ) : (
-                            categories.map((cat) => (
-                                <Card id={`category-${cat.id}`} key={cat.id} className="p-0 border-0 shadow-lg rounded-2xl bg-white overflow-hidden group hover:ring-2 hover:ring-emerald-100 transition-all">
-                                    {/* Green Header */}
-                                    <div className="bg-emerald-700 p-4 flex items-center justify-between">
-                                        <div className="flex-1 flex items-center gap-2 group/input">
-                                            <input
-                                                defaultValue={cat.category}
-                                                onBlur={(e) => {
-                                                    if (e.target.value !== cat.category) {
-                                                        updateCategoryName(cat.id, e.target.value);
-                                                    }
-                                                }}
-                                                className="bg-transparent border-0 font-bold text-white text-lg tracking-wider focus:ring-0 outline-none w-full cursor-pointer hover:bg-white/10 rounded px-2 -ml-2 transition-colors placeholder-white/50"
-                                                placeholder="NOMBRE CATEGORÍA"
-                                            />
-                                            <Edit2 className="w-4 h-4 text-white/50 group-hover/input:text-white transition-colors opacity-0 group-hover/input:opacity-100 pointer-events-none" />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                onClick={() => deleteCategory(cat.id)}
-                                                className="text-white/80 hover:text-white hover:bg-white/20 rounded-lg p-2 h-auto"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </Button>
-                                            <div className="cursor-grab active:cursor-grabbing text-white/50 hover:text-white/80">
-                                                <GripVertical className="w-4 h-4" />
-                                            </div>
-                                        </div>
+                    ) : (
+                        categories.map((cat) => (
+                            <Card id={`category-${cat.id}`} key={cat.id} className="border-0 shadow-lg rounded-xl bg-white overflow-hidden flex flex-col">
+                                {/* Green Header */}
+                                <div className="bg-emerald-700 px-6 py-4 flex items-center justify-between">
+                                    <input
+                                        id={`cat-input-${cat.id}`}
+                                        defaultValue={cat.category}
+                                        onBlur={(e) => {
+                                            if (e.target.value !== cat.category) {
+                                                updateCategoryName(cat.id, e.target.value);
+                                            }
+                                        }}
+                                        className="bg-transparent border-0 font-extrabold text-white text-xl tracking-tight focus:ring-0 outline-none cursor-pointer hover:bg-white/10 focus:bg-white/10 rounded px-2 -ml-2 transition-colors placeholder-white/50 w-full max-w-md"
+                                        placeholder="NOMBRE CATEGORÍA"
+                                    />
+                                    <div className="flex items-center gap-3">
+                                        <button
+                                            onClick={() => document.getElementById(`cat-input-${cat.id}`)?.focus()}
+                                            className="text-white/70 hover:text-white transition-colors"
+                                            title="Editar nombre"
+                                        >
+                                            <Edit2 className="w-5 h-5" />
+                                        </button>
+                                        <button onClick={() => deleteCategory(cat.id)} className="text-white/70 hover:text-white transition-colors">
+                                            <Trash2 className="w-5 h-5" />
+                                        </button>
                                     </div>
+                                </div>
 
-                                    {/* Card Body */}
-                                    <div className="p-5 flex items-center justify-between">
-                                        <div>
-                                            <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-1">Contenido</p>
-                                            <div className="flex items-center gap-2">
-                                                <Tag className="w-4 h-4 text-emerald-600" />
-                                                <span className="text-lg font-bold text-gray-900">
-                                                    {cat.products.length} {cat.products.length === 1 ? 'Producto' : 'Productos'}
-                                                </span>
+                                {/* Card Body: Products List */}
+                                <div className="p-6 space-y-4 bg-gray-50/50">
+                                    {cat.products && cat.products.map((product: any) => (
+                                        <div key={product.id} className="bg-white border border-gray-100 rounded-xl p-3 flex flex-col md:flex-row items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                                            {/* Image */}
+                                            <div className="w-20 h-20 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                                                {product.image ? (
+                                                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                                        <Tag className="w-8 h-8" />
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Info */}
+                                            <div className="flex-1 text-center md:text-left">
+                                                <h4 className="font-bold text-gray-900 text-lg leading-tight">{product.name}</h4>
+                                                <p className="text-sm text-gray-500 italic mt-1 line-clamp-2 md:line-clamp-1">
+                                                    {product.description || "Sin descripción"}
+                                                </p>
+                                                <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
+                                                    <div className={`w-4 h-4 rounded flex items-center justify-center ${product.available ? 'bg-purple-600' : 'bg-gray-300'}`}>
+                                                        {product.available && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
+                                                    </div>
+                                                    <span className="text-xs font-semibold text-gray-500 uppercase">{product.available ? 'Disponible' : 'Agotado'}</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Controls */}
+                                            <div className="flex items-center gap-6 mt-2 md:mt-0">
+                                                <div className="text-gray-300 cursor-grab active:cursor-grabbing hover:text-gray-400">
+                                                    <MenuIcon className="w-6 h-6" />
+                                                </div>
+
+                                                <div className="flex flex-col items-end">
+                                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Precio</span>
+                                                    <div className="border border-emerald-200 bg-white text-emerald-700 font-bold px-3 py-1.5 rounded-lg min-w-[80px] text-center shadow-sm">
+                                                        {product.price}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                    ))}
 
-                                        <Link href="/v1/business/menu/products">
-                                            <Button
-                                                className="bg-gray-50 text-gray-600 hover:bg-emerald-50 hover:text-emerald-700 border-0 shadow-sm transition-all"
-                                            >
-                                                Ver Productos
-                                            </Button>
+                                    {/* Add Product Button (Dashed) */}
+                                    <div className="pt-2">
+                                        <Link href={`/v1/business/menu/products?category=${cat.id}`} className="block">
+                                            <button className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-semibold hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50 transition-all flex items-center justify-center gap-2">
+                                                <PlusCircle className="w-5 h-5" />
+                                                Agregar Producto
+                                            </button>
                                         </Link>
                                     </div>
-                                </Card>
-                            ))
-                        )}
-                    </div>
+                                </div>
+                            </Card>
+                        ))
+                    )}
                 </div>
             </main>
         </div>

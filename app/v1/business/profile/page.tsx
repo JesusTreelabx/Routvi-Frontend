@@ -56,6 +56,8 @@ export default function BusinessProfilePage() {
     const DEFAULT_DATA = {
         menu: [],
         name: "",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd-r7RCP_wrYF-iYer-DJxDs8tahNSMX_CvA&s", // Default placeholder
+        background: "https://scontent.fbjx1-3.fna.fbcdn.net/v/t39.30808-6/336913052_122043387483732_3628439591084921623_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=S7Q-EUSS_P0Q7kNvwFJumim&_nc_oc=Adl3bgo0HSN3tbV5QiOoOhHtjJUDHC-qJDoCnc4HXAC-bm6HyYYN0uayez0fAz5yl66k70Nwv0d_8FGk6R_elIdI&_nc_zt=23&_nc_ht=scontent.fbjx1-3.fna&_nc_gid=iD-nsayfWaj35mP_J2x-qQ&oh=00_Aftq_jcB3tMIihsPHe6sop9IK1cHlwe7ZIRTO20UTTa3ew&oe=69892811", // Default placeholder
         category: "",
         priceRange: "",
         description: "",
@@ -134,6 +136,16 @@ export default function BusinessProfilePage() {
         }
         current[keys[keys.length - 1]] = value;
         setData(newData);
+    };
+
+    const handleUpdateImage = () => {
+        const url = window.prompt("Ingresa la URL de la nueva imagen de perfil:", data.image);
+        if (url) updateField('image', url);
+    };
+
+    const handleUpdateBackground = () => {
+        const url = window.prompt("Ingresa la URL de la nueva imagen de portada:", data.background);
+        if (url) updateField('background', url);
     };
 
     // --- Menu Category Actions ---
@@ -242,12 +254,7 @@ export default function BusinessProfilePage() {
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <Link href="/v1/business/promotions">
-                            <Button className="bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 shadow-sm gap-2 px-6 h-12 rounded-xl transition-all active:scale-95">
-                                <Tag className="w-5 h-5" />
-                                Promociones
-                            </Button>
-                        </Link>
+
                         <Button
                             onClick={() => handleSave()}
                             disabled={saving}
@@ -263,9 +270,9 @@ export default function BusinessProfilePage() {
                     <div className="lg:col-span-1 flex flex-col gap-6">
                         <Card className="p-0 overflow-hidden border-2 border-white shadow-xl rounded-2xl">
                             <div className="relative h-32 bg-primary-100">
-                                <img src="https://scontent.fbjx1-3.fna.fbcdn.net/v/t39.30808-6/336913052_122043387483732_3628439591084921623_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=S7Q-EUSS_P0Q7kNvwFJumim&_nc_oc=Adl3bgo0HSN3tbV5QiOoOhHtjJUDHC-qJDoCnc4HXAC-bm6HyYYN0uayez0fAz5yl66k70Nwv0d_8FGk6R_elIdI&_nc_zt=23&_nc_ht=scontent.fbjx1-3.fna&_nc_gid=iD-nsayfWaj35mP_J2x-qQ&oh=00_Aftq_jcB3tMIihsPHe6sop9IK1cHlwe7ZIRTO20UTTa3ew&oe=69892811" className="w-full h-full object-cover opacity-60" alt="Cover" />
+                                <img src={data.background} className="w-full h-full object-cover opacity-60" alt="Cover" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                                <button className="absolute bottom-2 right-2 p-2 bg-white/90 backdrop-blur rounded-full shadow-md hover:bg-white transition-colors">
+                                <button onClick={handleUpdateBackground} className="absolute bottom-2 right-2 p-2 bg-white/90 backdrop-blur rounded-full shadow-md hover:bg-white transition-colors" title="Cambiar Portada">
                                     <Camera className="w-4 h-4 text-primary-600" />
                                 </button>
                             </div>
@@ -273,9 +280,9 @@ export default function BusinessProfilePage() {
                                 <div className="absolute -top-12 left-6">
                                     <div className="relative">
                                         <div className="w-24 h-24 rounded-2xl bg-white p-1 shadow-xl border-4 border-white overflow-hidden">
-                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd-r7RCP_wrYF-iYer-DJxDs8tahNSMX_CvA&s" className="w-full h-full object-cover" alt="Logo" />
+                                            <img src={data.image} className="w-full h-full object-cover" alt="Logo" />
                                         </div>
-                                        <button className="absolute -bottom-1 -right-1 p-1.5 bg-primary-600 rounded-full text-white shadow-md border-2 border-white hover:bg-primary-700 transition-colors">
+                                        <button onClick={handleUpdateImage} className="absolute -bottom-1 -right-1 p-1.5 bg-primary-600 rounded-full text-white shadow-md border-2 border-white hover:bg-primary-700 transition-colors" title="Cambiar Foto de Perfil">
                                             <Camera className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -290,7 +297,7 @@ export default function BusinessProfilePage() {
                             </div>
                         </Card>
 
-                        <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white">
+                        <Card className="p-6 border border-gray-200 border-t-4 border-t-pink-500 shadow-lg rounded-2xl bg-white">
                             <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">Redes Sociales</h3>
                             <div className="flex flex-col gap-3">
                                 <div className="flex flex-col gap-1">
@@ -317,7 +324,7 @@ export default function BusinessProfilePage() {
                                 <div className="p-2 bg-primary-100 rounded-lg"><Store className="w-5 h-5 text-primary-700" /></div>
                                 <h3 className="text-xl font-bold text-gray-900 italic">Información Principal</h3>
                             </div>
-                            <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white space-y-4">
+                            <Card className="p-6 border border-gray-200 border-t-4 border-t-primary-500 shadow-lg rounded-2xl bg-white space-y-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre del Negocio</label>
                                     <Input value={data.name} onChange={(e) => updateField('name', e.target.value)} className="h-12 rounded-xl bg-gray-50" />
@@ -350,7 +357,7 @@ export default function BusinessProfilePage() {
                                 <div className="p-2 bg-purple-100 rounded-lg"><Tag className="w-5 h-5 text-purple-700" /></div>
                                 <h3 className="text-xl font-bold text-gray-900 italic">Vibes y Características</h3>
                             </div>
-                            <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white space-y-6">
+                            <Card className="p-6 border border-gray-200 border-t-4 border-t-purple-500 shadow-lg rounded-2xl bg-white space-y-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-3">¿Cuál es el vibe del lugar?</label>
                                     <div className="flex flex-wrap gap-2">
@@ -390,110 +397,31 @@ export default function BusinessProfilePage() {
                         </section>
 
                         <section>
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="p-2 bg-emerald-100 rounded-lg"><UtensilsCrossed className="w-5 h-5 text-emerald-700" /></div>
-                                    <h3 className="text-xl font-bold text-gray-900 italic">Menú y Productos</h3>
+                            <div className="flex items-center gap-2 mb-4">
+                                <div className="p-2 bg-emerald-100 rounded-lg"><UtensilsCrossed className="w-5 h-5 text-emerald-700" /></div>
+                                <h3 className="text-xl font-bold text-gray-900 italic">Menú, Productos y Promociones</h3>
+                            </div>
+                            <Card className="p-6 border border-gray-200 border-t-4 border-t-emerald-500 shadow-lg rounded-2xl bg-white">
+                                <div className="flex gap-3">
+                                    <Link href="/v1/business/menu/categories">
+                                        <Button className="h-9 px-4 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-0 flex items-center gap-2 shadow-sm transition-all hover:shadow-md">
+                                            <span className="text-sm font-bold uppercase tracking-tight">Categorías</span>
+                                        </Button>
+                                    </Link>
+                                    <Link href="/v1/business/menu/products">
+                                        <Button className="h-9 px-4 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-0 flex items-center gap-2 group">
+                                            <span className="text-sm font-bold uppercase tracking-tight">Productos</span>
+                                        </Button>
+                                    </Link>
+                                    <Link href="/v1/business/promotions">
+                                        <Button className="h-9 px-4 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-0 flex items-center gap-2 group">
+                                            <span className="text-sm font-bold uppercase tracking-tight">Promociones</span>
+                                        </Button>
+                                    </Link>
                                 </div>
-                                <Button onClick={addCategory} className="h-9 px-4 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-0 flex items-center gap-2 group">
-                                    <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                    <span className="text-sm font-bold uppercase tracking-tight">Nueva Categoría</span>
-                                </Button>
-                            </div>
-                            <div className="flex flex-col gap-6">
-                                {data.menu.map((cat: any, cIdx: number) => (
-                                    <Card id={`category-${cat.id}`} key={cat.id || cIdx} className="p-0 border-0 shadow-lg rounded-2xl bg-white overflow-hidden">
-                                        <div className="bg-emerald-700 p-4 flex items-center justify-between">
-                                            <div className="flex-1 flex items-center gap-2 group/title">
-                                                <input
-                                                    value={cat.category}
-                                                    onChange={(e) => {
-                                                        const newMenu = [...data.menu];
-                                                        newMenu[cIdx].category = e.target.value;
-                                                        setData({ ...data, menu: newMenu });
-                                                    }}
-                                                    onBlur={(e) => updateCategoryName(cat.id, e.target.value)}
-                                                    className="bg-transparent border-0 font-bold text-white tracking-wider focus:ring-0 outline-none w-full cursor-pointer hover:bg-white/10 rounded px-2 -ml-2 transition-colors"
-                                                />
-                                                <Edit2 className="w-4 h-4 text-white/50 group-hover/title:text-white transition-colors" />
-                                            </div>
-                                            <Trash2 onClick={() => deleteCategory(cat.id)} className="w-4 h-4 text-white/80 cursor-pointer hover:text-white ml-4 flex-shrink-0" />
-                                        </div>
-                                        <div className="p-5 flex flex-col gap-4">
-                                            {cat.products.map((prod: any, pIdx: number) => (
-                                                <div key={prod.id} className="flex gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 group relative">
-                                                    <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200 relative border-2 border-white shadow-sm">
-                                                        <img src={prod.image} className="w-full h-full object-cover" alt={prod.name} />
-                                                        <button className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ImageIcon className="w-6 h-6 text-white" /></button>
-                                                    </div>
-                                                    <div className="flex-1 flex flex-col justify-between">
-                                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                                                            <div className="md:col-span-3">
-                                                                <input
-                                                                    value={prod.name}
-                                                                    onChange={(e) => {
-                                                                        const newMenu = [...data.menu];
-                                                                        newMenu[cIdx].products[pIdx].name = e.target.value;
-                                                                        setData({ ...data, menu: newMenu });
-                                                                    }}
-                                                                    onBlur={(e) => updateProduct(prod.id, { name: e.target.value })}
-                                                                    className="w-full bg-transparent border-0 font-bold text-lg p-0 focus:ring-0 outline-none"
-                                                                />
-                                                                <textarea
-                                                                    rows={1}
-                                                                    className="w-full bg-transparent border-0 p-0 text-sm text-gray-500 focus:ring-0 resize-none italic outline-none"
-                                                                    value={prod.description}
-                                                                    onChange={(e) => {
-                                                                        const newMenu = [...data.menu];
-                                                                        newMenu[cIdx].products[pIdx].description = e.target.value;
-                                                                        setData({ ...data, menu: newMenu });
-                                                                    }}
-                                                                    onBlur={(e) => updateProduct(prod.id, { description: e.target.value })}
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <label className="text-[10px] text-gray-400 font-bold uppercase">Precio</label>
-                                                                <Input
-                                                                    value={prod.price}
-                                                                    onChange={(e) => {
-                                                                        const newMenu = [...data.menu];
-                                                                        newMenu[cIdx].products[pIdx].price = e.target.value;
-                                                                        setData({ ...data, menu: newMenu });
-                                                                    }}
-                                                                    onBlur={(e) => updateProduct(prod.id, { price: e.target.value })}
-                                                                    className="h-9 bg-white border-gray-200 text-emerald-600 font-bold"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center gap-2 mt-2">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={prod.available}
-                                                                onChange={() => {
-                                                                    const newAvailable = !prod.available;
-                                                                    const newMenu = [...data.menu];
-                                                                    newMenu[cIdx].products[pIdx].available = newAvailable;
-                                                                    setData({ ...data, menu: newMenu });
-                                                                    updateProduct(prod.id, { available: newAvailable });
-                                                                }}
-                                                                className="rounded border-gray-300 text-emerald-600"
-                                                            />
-                                                            <span className="text-xs font-semibold text-gray-600">Disponible</span>
-                                                        </div>
-                                                    </div>
-                                                    <Trash2 onClick={() => deleteProduct(prod.id, cat.id)} className="absolute top-2 right-2 w-4 h-4 text-gray-300 hover:text-red-500 cursor-pointer transition-colors" />
-                                                </div>
-                                            ))}
-                                            <Link href="/v1/business/menu/products" className="w-full">
-                                                <button className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-semibold hover:border-emerald-300 hover:text-emerald-500 transition-all flex items-center justify-center gap-2 mt-2">
-                                                    <Plus className="w-4 h-4" />Agregar Producto
-                                                </button>
-                                            </Link>
-                                        </div>
-                                    </Card>
-                                ))}
-                            </div>
+                            </Card>
                         </section>
+
 
                         <section>
                             <div className="flex items-center gap-2 mb-4">
@@ -501,7 +429,7 @@ export default function BusinessProfilePage() {
                                 <h3 className="text-xl font-bold text-gray-900 italic">Ubicación y Contacto</h3>
                             </div>
 
-                            <Card className="p-0 border-0 shadow-lg rounded-3xl bg-white overflow-hidden flex flex-col md:flex-row">
+                            <Card className="p-0 border border-t-4 border-t-blue-500 border-gray-200 shadow-lg rounded-3xl bg-white overflow-hidden flex flex-col md:flex-row">
                                 {/* Map Section */}
                                 <div className="w-full md:w-1/3 min-h-[250px] bg-gray-100 relative">
                                     <img
@@ -575,7 +503,7 @@ export default function BusinessProfilePage() {
                                 <div className="p-2 bg-slate-100 rounded-lg"><ShieldCheck className="w-5 h-5 text-slate-700" /></div>
                                 <h3 className="text-xl font-bold text-gray-900 italic">Fiscal y Legal</h3>
                             </div>
-                            <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <Card className="p-6 border border-gray-200 border-t-4 border-t-slate-500 shadow-lg rounded-2xl bg-white grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div><label className="block text-sm font-semibold text-gray-700 mb-2">Razón Social</label><Input value={data.legal.razonSocial} onChange={(e) => updateField('legal.razonSocial', e.target.value)} className="h-12 bg-gray-50" /></div>
                                 <div><label className="block text-sm font-semibold text-gray-700 mb-2">RFC</label><Input value={data.legal.rfc} onChange={(e) => updateField('legal.rfc', e.target.value)} className="h-12 bg-gray-50 uppercase" /></div>
                                 <div>
@@ -593,7 +521,7 @@ export default function BusinessProfilePage() {
                                 <div className="p-2 bg-indigo-100 rounded-lg"><User className="w-5 h-5 text-indigo-700" /></div>
                                 <h3 className="text-xl font-bold text-gray-900 italic">Admin</h3>
                             </div>
-                            <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <Card className="p-6 border border-gray-200 border-t-4 border-t-indigo-500 shadow-lg rounded-2xl bg-white grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div><label className="block text-sm font-semibold text-gray-700 mb-2">Representante</label><Input value={data.admin.representative} onChange={(e) => updateField('admin.representative', e.target.value)} className="h-12 bg-gray-50" /></div>
                                 <div><label className="block text-sm font-semibold text-gray-700 mb-2">Puesto</label><Input value={data.admin.position} onChange={(e) => updateField('admin.position', e.target.value)} className="h-12 bg-gray-50" /></div>
                             </Card>
@@ -604,7 +532,7 @@ export default function BusinessProfilePage() {
                                 <div className="p-2 bg-orange-100 rounded-lg"><Clock className="w-5 h-5 text-orange-700" /></div>
                                 <h3 className="text-xl font-bold text-gray-900 italic">Horarios</h3>
                             </div>
-                            <Card className="p-6 border-0 shadow-lg rounded-2xl bg-white">
+                            <Card className="p-6 border border-gray-200 border-t-4 border-t-orange-500 shadow-lg rounded-2xl bg-white">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
                                     {Object.entries(data.hours).map(([day, times]: [string, any]) => (
                                         <div key={day} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 md:last:border-b">
@@ -620,8 +548,8 @@ export default function BusinessProfilePage() {
                             </Card>
                         </section>
                     </div>
-                </div>
-            </main>
-        </div>
+                </div >
+            </main >
+        </div >
     );
 }

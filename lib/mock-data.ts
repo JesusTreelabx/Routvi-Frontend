@@ -7,6 +7,8 @@ const dataFilePath = path.join(process.cwd(), 'data', 'menu.json');
 const DEFAULT_BUSINESS_DATA = {
     menu: [],
     name: "Tu Negocio",
+    image: "",
+    background: "",
     category: "Pizzería",
     priceRange: "$$",
     description: "Una breve descripción de tu negocio...",
@@ -40,7 +42,8 @@ const DEFAULT_BUSINESS_DATA = {
     },
     vibes: ["Familiar"],
     amenities: ["WiFi Gratis", "Pet Friendly"],
-    promotions: []
+    promotions: [],
+    dailySpecials: {}
 };
 
 // Helper function to read data from the JSON file
@@ -91,6 +94,7 @@ export const businessData = {
     get vibes() { return readData().vibes; },
     get amenities() { return readData().amenities; },
     get promotions() { return readData().promotions || []; },
+    get dailySpecials() { return readData().dailySpecials || {}; },
     get topPromos() { return readData().topPromos || []; },
 
     // Setter for full update

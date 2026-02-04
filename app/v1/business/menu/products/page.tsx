@@ -96,7 +96,10 @@ export default function ProductsPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     categoryId: formData.categoryId,
-                    name: formData.name
+                    name: formData.name,
+                    description: formData.description,
+                    price: formData.price,
+                    image: formData.imageUrl
                 })
             });
 
@@ -136,6 +139,7 @@ export default function ProductsPage() {
             if (response.ok) {
                 await fetchData();
                 setEditingProduct(null);
+                setIsCreateModalOpen(false);
                 resetForm();
             }
         } catch (error) {
@@ -161,12 +165,45 @@ export default function ProductsPage() {
         }
     };
 
+    const handleToggleAvailability = async (product: any) => {
+        try {
+            // Optimistic update
+            const updatedProducts = filteredProducts.map(p =>
+                p.id === product.id ? { ...p, available: !p.available } : p
+            );
+            setFilteredProducts(updatedProducts);
+
+            const response = await fetch(`/api/v1/business/menu/products/${product.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    available: !product.available
+                })
+            });
+
+            if (!response.ok) {
+                // Revert if failed
+                await fetchData();
+            }
+        } catch (error) {
+            console.error("Error toggling availability:", error);
+            await fetchData();
+        }
+    };
+
     const openCreateModal = () => {
         resetForm();
         setEditingProduct(null);
-        // Default to first category if available
-        if (categories.length > 0) {
-            setFormData(prev => ({ ...prev, categoryId: categories[0].id }));
+
+        let defaultCategoryId = '';
+        if (selectedCategory !== 'all') {
+            defaultCategoryId = selectedCategory;
+        } else if (categories.length > 0) {
+            defaultCategoryId = categories[0].id;
+        }
+
+        if (defaultCategoryId) {
+            setFormData(prev => ({ ...prev, categoryId: defaultCategoryId }));
         }
         setIsCreateModalOpen(true);
     };
@@ -214,7 +251,7 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Filters and Search */}
-                <Card className="p-4 mb-8 border-0 shadow-lg rounded-2xl bg-white flex flex-col md:flex-row gap-4 items-center">
+                <Card className="p-4 mb-8 border border-gray-200 border-t-4 border-t-emerald-500 shadow-lg rounded-2xl bg-white flex flex-col md:flex-row gap-4 items-center">
                     <div className="relative flex-1 w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <input
@@ -226,7 +263,7 @@ export default function ProductsPage() {
                     </div>
                     <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
                         <Filter className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">Filtrar por:</span>
+                        <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">Filtrar por Categoría:</span>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setSelectedCategory('all')}
@@ -263,8 +300,8 @@ export default function ProductsPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredProducts.map(product => (
-                            <Card key={product.id} className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
-                                <div className="relative h-48 bg-gray-200 overflow-hidden">
+                            <Card key={product.id} className="group isolate overflow-hidden border border-gray-200 border-t-4 border-t-emerald-500 shadow-md hover:shadow-xl transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
+                                <div className="relative h-48 bg-gray-200 overflow-hidden rounded-t-xl">
                                     {product.image ? (
                                         <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     ) : (
@@ -294,10 +331,18 @@ export default function ProductsPage() {
                                     <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-1">{product.description || "Sin descripción"}</p>
 
                                     <div className="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
-                                        <div className={`flex items-center gap-1.5 text-xs font-bold ${product.available ? 'text-emerald-600' : 'text-gray-400'}`}>
-                                            {product.available ? <CheckCircle2 className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                                        <button
+                                            onClick={() => handleToggleAvailability(product)}
+                                            className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${product.available ? 'bg-emerald-600' : 'bg-gray-200'}`}
+                                        >
+                                            <span className="sr-only">Toggle availability</span>
+                                            <span
+                                                className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${product.available ? 'translate-x-5' : 'translate-x-1'}`}
+                                            />
+                                        </button>
+                                        <span className={`text-xs font-bold ${product.available ? 'text-emerald-600' : 'text-gray-400'}`}>
                                             {product.available ? 'Disponible' : 'Agotado'}
-                                        </div>
+                                        </span>
                                     </div>
                                 </div>
                             </Card>
@@ -309,7 +354,7 @@ export default function ProductsPage() {
             {/* Modal for Create/Edit */}
             {isCreateModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
-                    <Card className="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8 animate-in zoom-in-95 duration-200">
+                    <Card className="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8 animate-in zoom-in-95 duration-200 border border-gray-200 border-t-4 border-t-primary-500">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-gray-900">{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</h2>
                             <button onClick={() => setIsCreateModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
@@ -343,40 +388,36 @@ export default function ProductsPage() {
                                     className="h-12 bg-gray-50"
                                 />
                             </div>
-                            {editingProduct && (
-                                <>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Precio</label>
-                                            <Input
-                                                value={formData.price}
-                                                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                                placeholder="$0"
-                                                className="h-12 bg-gray-50"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">URL Imagen</label>
-                                            <Input
-                                                value={formData.imageUrl}
-                                                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                                                placeholder="https://..."
-                                                className="h-12 bg-gray-50"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
-                                        <textarea
-                                            rows={3}
-                                            value={formData.description}
-                                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                            className="w-full rounded-xl bg-gray-50 border-0 p-4 focus:ring-2 focus:ring-primary-500 outline-none resize-none"
-                                            placeholder="Descripción del producto..."
-                                        />
-                                    </div>
-                                </>
-                            )}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Precio</label>
+                                    <Input
+                                        value={formData.price}
+                                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                        placeholder="$0"
+                                        className="h-12 bg-gray-50"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">URL Imagen</label>
+                                    <Input
+                                        value={formData.imageUrl}
+                                        onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                                        placeholder="https://..."
+                                        className="h-12 bg-gray-50"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
+                                <textarea
+                                    rows={3}
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    className="w-full rounded-xl bg-gray-50 border-0 p-4 focus:ring-2 focus:ring-primary-500 outline-none resize-none"
+                                    placeholder="Descripción del producto..."
+                                />
+                            </div>
 
                             <div className="pt-4 flex gap-3">
                                 <Button type="button" onClick={() => setIsCreateModalOpen(false)} className="flex-1 h-12 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl border-0">

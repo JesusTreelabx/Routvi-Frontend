@@ -8,8 +8,32 @@
           "id": "1769893300456",
           "name": "Pizza Pepperoni",
           "description": "Clásica pizza con doble pepperoni y queso mozzarella.",
-          "price": "$180",
-          "image": "https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=800&auto=format&fit=crop",
+          "price": "$149",
+          "image": "https://images.ecestaticos.com/WJT0BFvdZ4poZa5PiFHuCXX2sTo=/0x0:2121x1414/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F96f%2F563%2Fc84%2F96f563c8404ac8cd97c158887aa56ae1.jpg",
+          "available": true
+        },
+        {
+          "id": "1770225325987",
+          "name": "Pizza 4 Quesos",
+          "description": "Combinación perfecta de Mozzarella, Gorgonzola, Parmesano y Provolone fundidos sobre nuestra masa artesanal.",
+          "price": "$189",
+          "image": "https://www.losllanos.mx/wp-content/uploads/2023/06/Pizza_cuatro_quesos_los_llanos.jpg",
+          "available": false
+        },
+        {
+          "id": "1770225570600",
+          "name": "Pizza Italiana Napoles",
+          "description": "Auténtica tradición napolitana: masa delgada con bordes aireados, tomate San Marzano, mozzarella di bufala y albahaca fresca.",
+          "price": "$159",
+          "image": "https://www.agoramagazine.it/media/k2/items/cache/b488823d8c08ca688296ee53ea9a1338_XL.jpg",
+          "available": true
+        },
+        {
+          "id": "1770225739736",
+          "name": "Pizza Deep Chicago",
+          "description": "Famosa Deep Dish estilo Chicago: base crujiente y profunda repleta de queso fundido, salchicha italiana y nuestra salsa de tomate especial.",
+          "price": "$249",
+          "image": "https://tastecooking.com/wp-content/uploads/2010/01/shutterstock_562847038.jpg",
           "available": true
         }
       ]
@@ -33,6 +57,14 @@
           "price": "$35",
           "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=800&auto=format&fit=crop",
           "available": true
+        },
+        {
+          "id": "1770223345336",
+          "name": "Agua",
+          "description": "Botella de agua natural 600ml.",
+          "price": "$20",
+          "image": "https://us-central1-yema-cdn.cloudfunctions.net/cdn/api/v1/yema-plm/images/view/productImage/ciel-600-ml-nombre_83d83861-8a7d-414f-9d80-c8aab747777d=fjpg-q80-tcrop-w688",
+          "available": true
         }
       ]
     },
@@ -44,8 +76,16 @@
           "id": "1769893440569",
           "name": "Spicy Wings",
           "description": "Alitas de pollo bañadas en salsa picante especial.",
-          "price": "$120",
+          "price": "$129",
           "image": "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=800&auto=format&fit=crop",
+          "available": true
+        },
+        {
+          "id": "1770223449101",
+          "name": "Special Nachos",
+          "description": "Special nachos con hot chili beans carne, queso americano crema y jalapeño",
+          "price": "$119",
+          "image": "https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480/img/recipe/ras/Assets/9ac263b184fa312177cc69dda22b9eae/Derivates/bd1aa1a15cc3ea1539bb363688e07ea5c1b27c8d.jpg",
           "available": true
         }
       ]
@@ -58,7 +98,7 @@
           "id": "1769893315199",
           "name": "Pizza Nutella",
           "description": "Deliciosa pizza dulce con base de Nutella y fresas.",
-          "price": "$200",
+          "price": "$199",
           "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop",
           "available": true
         }
@@ -70,36 +110,46 @@
       "products": [
         {
           "id": "1770138048644",
-          "name": "Cesar",
-          "description": "",
-          "price": "$0",
-          "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
+          "name": "Ensalada Cesar",
+          "description": "Mezcla fresca de lechuga romana, crutones crujientes, queso parmesano rallado y nuestro clásico aderezo César.",
+          "price": "$89",
+          "image": "https://cdn.colombia.com/gastronomia/2011/08/19/ensalada-cesar-3403.jpg",
           "available": true
         }
       ]
     },
     {
       "id": "1770219804804",
-      "category": "Pasta",
+      "category": "Pastas",
       "products": [
         {
           "id": "1770219905919",
           "name": "Pasta Italiana",
-          "description": "",
-          "price": "$0",
+          "description": "Pasta fresca servida con nuestra salsa de tomate casera, albahaca y queso parmesano.",
+          "price": "$99",
           "image": "https://mercadoventas.es/wp-content/uploads/2024/09/receta-de-pasta.jpg",
+          "available": false
+        },
+        {
+          "id": "1770224343328",
+          "name": "Pasta Italiana 2",
+          "description": "Exquisita pasta con albóndigas de res sazonadas en salsa marinara y hierbas finas.",
+          "price": "$119",
+          "image": "/images/uploaded_media_1770224770347.jpg",
           "available": true
         }
       ]
     }
   ],
   "name": "Proper Pizza Chicago",
+  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd-r7RCP_wrYF-iYer-DJxDs8tahNSMX_CvA&s",
+  "background": "https://scontent.fbjx1-3.fna.fbcdn.net/v/t39.30808-6/336913052_122043387483732_3628439591084921623_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=S7Q-EUSS_P0Q7kNvwFJumim&_nc_oc=Adl3bgo0HSN3tbV5QiOoOhHtjJUDHC-qJDoCnc4HXAC-bm6HyYYN0uayez0fAz5yl66k70Nwv0d_8FGk6R_elIdI&_nc_zt=23&_nc_ht=scontent.fbjx1-3.fna&_nc_gid=iD-nsayfWaj35mP_J2x-qQ&oh=00_Aftq_jcB3tMIihsPHe6sop9IK1cHlwe7ZIRTO20UTTa3ew&oe=69892811",
   "category": "Pizzería",
-  "priceRange": "$$",
-  "description": "En Proper Pizza, cada bocado es un pasaporte a un sabor rico. Nuestras recetas artesanales combinan técnicas europeas tradicionales con un toque moderno, creando pizzas audaces, equilibradas e inolvidables. Desde nuestra masa perfectamente madurada hasta nuestras salsas exclusivas y combinaciones únicas de ingredientes, nos centramos en la calidad, la creatividad y la autenticidad. No es solo pizza, es una experiencia de sabor perfeccionada en todos los continentes.",
+  "priceRange": "$$$",
+  "description": "En Proper Pizza nuestras recetas artesanales combinan técnicas europeas tradicionales con un toque moderno, calidad y autenticidad. creando pizzas audaces, equilibradas e inolvidables. No es solo una pizza, es una experiencia de sabor perfeccionada.",
   "social": {
-    "instagram": "@tunegocio",
-    "facebook": "/tunegocio"
+    "instagram": "@properpizzachicago",
+    "facebook": "/properpizzachicago"
   },
   "contact": {
     "phone": "555-0000",
@@ -147,21 +197,25 @@
     }
   },
   "vibes": [
-    "Familiar"
+    "Familiar",
+    "Con Amigos"
   ],
   "amenities": [
     "WiFi Gratis",
-    "Pet Friendly"
+    "Estacionamiento",
+    "Aire Acondicionado"
   ],
   "promotions": [
     {
       "id": "promo_1770136719269",
-      "title": "Martes 2x1 Pizza grande",
-      "description": "2x1 en Pizza Grande todos los martes",
+      "title": "Martes 2x1 Pizza Pepperoni",
+      "description": "2x1 en Pizza Grande de Pepperoni todos los martes",
       "code": "MARTES2X1",
       "discount": "50",
       "expiryDate": "2027-01-01",
-      "active": false
+      "active": true,
+      "productId": "1769893300456",
+      "productName": "Pizza Pepperoni"
     },
     {
       "id": "promo_1770137010420",
@@ -170,7 +224,9 @@
       "code": "MIERCOLESDEAMIGOS",
       "discount": "20",
       "expiryDate": "2027-01-01",
-      "active": true
+      "active": true,
+      "productId": "1769893440569",
+      "productName": "Spicy Wings"
     },
     {
       "id": "promo_1770217556128",
@@ -179,10 +235,37 @@
       "code": "JUGOGRATIS",
       "discount": "99",
       "expiryDate": "2026-03-11",
-      "active": true
+      "active": true,
+      "productId": "1769893353988",
+      "productName": "Jugo"
+    },
+    {
+      "id": "promo_1770234528682",
+      "title": "2 Pastas y 30% ",
+      "description": "LLeva 2 Pastas Italianas y recibe un descuento de 30%",
+      "code": "PIDEPASTA",
+      "discount": "30",
+      "expiryDate": "2026-03-11",
+      "active": false,
+      "productId": "1770224343328",
+      "productName": "Pasta Italiana 2"
     }
   ],
+  "dailySpecials": {
+    "Miércoles": "1769893440569"
+  },
   "topPromos": [
+    {
+      "id": "promo_1770136719269",
+      "title": "Martes 2x1 Pizza Pepperoni",
+      "description": "2x1 en Pizza Grande de Pepperoni todos los martes",
+      "code": "MARTES2X1",
+      "discount": "50",
+      "expiryDate": "2027-01-01",
+      "active": true,
+      "productId": "1769893300456",
+      "productName": "Pizza Pepperoni"
+    },
     {
       "id": "promo_1770137010420",
       "title": "Miercoles Spicy Wings",
@@ -190,7 +273,9 @@
       "code": "MIERCOLESDEAMIGOS",
       "discount": "20",
       "expiryDate": "2027-01-01",
-      "active": true
+      "active": true,
+      "productId": "1769893440569",
+      "productName": "Spicy Wings"
     },
     {
       "id": "promo_1770217556128",
@@ -199,7 +284,9 @@
       "code": "JUGOGRATIS",
       "discount": "99",
       "expiryDate": "2026-03-11",
-      "active": true
+      "active": true,
+      "productId": "1769893353988",
+      "productName": "Jugo"
     }
   ]
 }

@@ -3,7 +3,7 @@ import { getMenu, saveMenu } from '@/lib/mock-data';
 
 export async function POST(request: Request) {
     try {
-        const { categoryId, name } = await request.json();
+        const { categoryId, name, description, price, image } = await request.json();
 
         if (!categoryId || !name) {
             return NextResponse.json({ error: "Categoría y nombre son obligatorios" }, { status: 400 });
@@ -19,9 +19,9 @@ export async function POST(request: Request) {
         const newProduct = {
             id: Date.now().toString(),
             name,
-            description: "",
-            price: "$0",
-            image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
+            description: description || "",
+            price: price || "$0",
+            image: image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop",
             available: true
         };
 

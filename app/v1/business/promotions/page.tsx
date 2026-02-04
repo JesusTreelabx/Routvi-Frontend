@@ -16,6 +16,8 @@ interface Promotion {
     discount: string;
     expiryDate: string;
     active: boolean;
+    productId?: string;
+    productName?: string;
 }
 
 export default function PromotionsPage() {
@@ -25,6 +27,7 @@ export default function PromotionsPage() {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [products, setProducts] = useState<any[]>([]);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -32,12 +35,29 @@ export default function PromotionsPage() {
         description: '',
         code: '',
         discount: '',
-        expiryDate: ''
+        expiryDate: '',
+        productId: '',
+        productName: ''
     });
 
     useEffect(() => {
         fetchPromotions();
+        fetchProducts();
     }, []);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('/api/v1/business/profile');
+            const result = await response.json();
+            if (result.menu) {
+                // Flatten products from callbacks
+                const allProducts = result.menu.flatMap((cat: any) => cat.products);
+                setProducts(allProducts);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
 
     const fetchPromotions = async () => {
         try {
@@ -61,7 +81,9 @@ export default function PromotionsPage() {
                 description: promo.description,
                 code: promo.code,
                 discount: promo.discount,
-                expiryDate: promo.expiryDate.split('T')[0]
+                expiryDate: promo.expiryDate.split('T')[0],
+                productId: promo.productId || '',
+                productName: promo.productName || ''
             });
         } else {
             setEditingId(null);
@@ -70,7 +92,9 @@ export default function PromotionsPage() {
                 description: '',
                 code: '',
                 discount: '',
-                expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                productId: '',
+                productName: ''
             });
         }
         setIsModalOpen(true);
@@ -208,6 +232,12 @@ export default function PromotionsPage() {
                                     </div>
 
                                     <h3 className="text-xl font-bold text-gray-900 mb-2">{promo.title}</h3>
+                                    {promo.productName && (
+                                        <div className="mb-2 inline-flex items-center gap-1.5 px-2 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold uppercase tracking-wide">
+                                            <Tag className="w-3 h-3" />
+                                            {promo.productName}
+                                        </div>
+                                    )}
                                     <p className="text-gray-500 text-sm mb-4 line-clamp-2">{promo.description}</p>
 
                                     <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
@@ -269,6 +299,29 @@ export default function PromotionsPage() {
                                     required
                                     className="bg-gray-50 border-gray-200"
                                 />
+
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-1">Producto Aplicable (Opcional)</label>
+                                <select
+                                    value={formData.productId}
+                                    onChange={(e) => {
+                                        const selectedId = e.target.value;
+                                        const selectedProduct = products.find(p => p.id === selectedId);
+                                        setFormData({
+                                            ...formData,
+                                            productId: selectedId,
+                                            productName: selectedProduct ? selectedProduct.name : ''
+                                        });
+                                    }}
+                                    className="w-full h-10 rounded-xl bg-gray-50 border border-gray-200 px-3 text-sm focus:ring-2 focus:ring-primary-500 outline-none"
+                                >
+                                    <option value="">-- Seleccionar producto --</option>
+                                    {products.map(p => (
+                                        <option key={p.id} value={p.id}>{p.name}</option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div>

@@ -87,3 +87,37 @@ Para mejorar la navegación entre las secciones críticas del negocio:
 -   Ubicado estratégicamente junto al botón de "Guardar".
 -   Diseñado con un esquema de color índigo para diferenciarse de las acciones de guardado, pero manteniendo la coherencia visual.
 -   Redirige directamente a `http://localhost:3010/v1/business/promotions`.
+
+## 6. Actualización: Mejoras en Ventas y Navegación (04/02/2026)
+
+Se implementó una serie de funcionalidades enfocadas en conectar mejor las herramientas de venta (Promociones y Platillo del Día) con el inventario real.
+
+### A. Vinculación de Productos en Promociones
+**Problema:**
+Las promociones eran genéricas (solo texto) y no estaban vinculadas a un producto específico del inventario.
+
+**Solución:**
+- **API Actualizada:** El endpoint POST `/api/v1/business/promotions` ahora acepta `productId` y `productName`.
+- **Selección Inteligente:** Al crear una promoción, el usuario puede seleccionar un producto existente de un menú desplegable.
+- **Interfaz:** Las tarjetas de promoción ahora muestran el nombre del producto vinculado, facilitando su identificación.
+
+### B. "Platillo del Día" Enriquecido (`/v1/business/daily-special`)
+**Mejora Visual:**
+- Se reemplazó el selector nativo del sistema operativo por un **Dropdown Personalizado**.
+- **Contenido Rico:** Ahora cada opción muestra la foto del producto, su nombre y su precio.
+
+**Manejo de Disponibilidad:**
+- **Filtrado Visual:** Los productos marcados como "no disponibles" (agotados) siguen apareciendo en la lista para mantener la visibilidad del catálogo completo.
+- **Estado Agotado:** Estos productos se muestran con opacidad reducida (efecto deshabilitado), una etiqueta "Agotado" y no son seleccionables, previniendo errores en la publicación de ofertas.
+
+### C. Switch de Disponibilidad Rápida 
+**Funcionalidad:**
+En la vista de productos (`/v1/business/menu/products`), se añadió un **interruptor (Switch)** en cada tarjeta.
+- Permite marcar un producto como "Disponible" o "Agotado" con un solo clic.
+- La actualización es inmediata (optimistic UI) y no requiere abrir el formulario de edición.
+
+### D. Reorganización del Perfil
+**Ajuste de Navegación:**
+- Se movió el botón de acceso a "Promociones" desde la cabecera general a la sección de **Menú**.
+- La sección se renombró a **"Menú, Productos y Promociones"**.
+- Esto agrupa lógicamente todas las herramientas relacionadas con la oferta gastronómica en un solo bloque visual.

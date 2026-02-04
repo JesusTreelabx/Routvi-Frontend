@@ -12,7 +12,7 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { title, description, code, expiryDate, discount } = body;
+        const { title, description, code, expiryDate, discount, productId, productName } = body;
 
         if (!title || !description || !code) {
             return NextResponse.json({ error: "Título, descripción y código son obligatorios" }, { status: 400 });
@@ -25,7 +25,9 @@ export async function POST(request: Request) {
             code,
             discount: discount || "10%",
             expiryDate: expiryDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // +7 days
-            active: true
+            active: true,
+            productId: productId || null,
+            productName: productName || null
         };
 
         const currentPromos = businessData.promotions;
