@@ -3,14 +3,14 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18 # O la versión que necesites
+      nodejs: 20  # <--- Cambiamos de 18 a 20
     commands:
       - npm install
   build:
     commands:
-      - echo "Construyendo el proyecto..."
-      - npm run build 
+      - echo "Construyendo proyecto Next.js..."
+      - npm run build
 artifacts:
   files:
-    - '**/*' 
-  base-directory: 'dist' 
+    - '**/*'
+  base-directory: out 
