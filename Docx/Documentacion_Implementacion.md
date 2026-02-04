@@ -103,7 +103,7 @@ Las promociones eran genéricas (solo texto) y no estaban vinculadas a un produc
 
 ### B. "Platillo del Día" Enriquecido (`/v1/business/daily-special`)
 **Mejora Visual:**
-- Se reemplazó el selector nativo del sistema operativo por un **Dropdown Personalizado**.
+- Se reemplazó el selector nativo del sistema operativo por un **Dropdown Personalizado**
 - **Contenido Rico:** Ahora cada opción muestra la foto del producto, su nombre y su precio.
 
 **Manejo de Disponibilidad:**
