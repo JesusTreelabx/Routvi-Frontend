@@ -33,7 +33,7 @@ export default function DailySpecialPage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('/api/v1/business/profile');
+                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
                 const data = await response.json();
 
                 let allProducts: any[] = [];
@@ -75,7 +75,7 @@ export default function DailySpecialPage() {
         if (!selectedSpecial) return;
         setSettingSpecial(true);
         try {
-            const response = await fetch('/api/v1/business/daily-special/set', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/daily-special/set', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -18,7 +18,7 @@ export default function MenuDashboardPage() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await fetch('/api/v1/business/profile');
+                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
                 const result = await response.json();
 
                 let productCount = 0;

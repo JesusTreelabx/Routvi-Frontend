@@ -51,7 +51,7 @@ export default function CategoryProductsPage({ params }: { params: Promise<{ cat
         const fetchProducts = async () => {
             try {
                 // Fetch categories to find the current one name
-                const catsResponse = await fetch('/api/v1/business/profile');
+                const catsResponse = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
                 const catsData = await catsResponse.json();
                 const currentCat = catsData.menu.find((c: any) => c.id === categoryId);
 
@@ -81,7 +81,7 @@ export default function CategoryProductsPage({ params }: { params: Promise<{ cat
         }
         setAdding(true);
         try {
-            const response = await fetch(`/api/v1/business/menu/categories/${categoryId}/products`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories/${categoryId}/products`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newProduct)
@@ -105,7 +105,7 @@ export default function CategoryProductsPage({ params }: { params: Promise<{ cat
     const handleDeleteProduct = async (productId: string) => {
         if (!confirm('¿Estás seguro de eliminar este producto?')) return;
         try {
-            const response = await fetch(`/api/v1/business/menu/products/${productId}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${productId}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
@@ -122,7 +122,7 @@ export default function CategoryProductsPage({ params }: { params: Promise<{ cat
     const handleUpdateProduct = async () => {
         if (!editingProduct) return;
         try {
-            const response = await fetch(`/api/v1/business/menu/products/${editingProduct.id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${editingProduct.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(editingProduct)

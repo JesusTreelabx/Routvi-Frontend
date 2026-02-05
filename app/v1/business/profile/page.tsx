@@ -74,7 +74,7 @@ export default function BusinessProfilePage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/v1/business/profile');
+                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
                 let result = await response.json();
 
                 // Merge with defaults to ensure robustness
@@ -103,7 +103,7 @@ export default function BusinessProfilePage() {
         if (e) e.preventDefault();
         setSaving(true);
         try {
-            const response = await fetch('/api/v1/business/profile', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
@@ -151,7 +151,7 @@ export default function BusinessProfilePage() {
     // --- Menu Category Actions ---
     const addCategory = async () => {
         try {
-            const response = await fetch('/api/v1/business/menu/categories', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: 'Nueva Categoría' })
@@ -176,7 +176,7 @@ export default function BusinessProfilePage() {
 
     const updateCategoryName = async (id: string, name: string) => {
         try {
-            await fetch(`/api/v1/business/menu/categories/${id}`, {
+            await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name })
@@ -189,7 +189,7 @@ export default function BusinessProfilePage() {
     const deleteCategory = async (id: string) => {
         if (!confirm('¿Estás seguro de eliminar esta categoría y todos sus productos?')) return;
         try {
-            const response = await fetch(`/api/v1/business/menu/categories/${id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories/${id}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
@@ -205,7 +205,7 @@ export default function BusinessProfilePage() {
 
     const updateProduct = async (productId: string, updates: any) => {
         try {
-            await fetch(`/api/v1/business/menu/products/${productId}`, {
+            await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${productId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -217,7 +217,7 @@ export default function BusinessProfilePage() {
 
     const deleteProduct = async (productId: string, categoryId: string) => {
         try {
-            const response = await fetch(`/api/v1/business/menu/products/${productId}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${productId}`, {
                 method: 'DELETE'
             });
             if (response.ok) {

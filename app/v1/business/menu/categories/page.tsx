@@ -39,7 +39,7 @@ export default function BusinessMenuCategoriesPage() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('/api/v1/business/profile');
+                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
                 const data = await response.json();
                 setCategories(data.menu || []);
             } catch (error) {
@@ -59,7 +59,7 @@ export default function BusinessMenuCategoriesPage() {
     const addCategory = async () => {
         setAdding(true);
         try {
-            const response = await fetch('/api/v1/business/menu/categories', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: 'Nueva Categoría' })
@@ -116,7 +116,7 @@ export default function BusinessMenuCategoriesPage() {
 
     const updateCategoryName = async (id: string, name: string) => {
         try {
-            const response = await fetch(`/api/v1/business/menu/categories/${id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name })
@@ -133,7 +133,7 @@ export default function BusinessMenuCategoriesPage() {
     const deleteCategory = async (id: string) => {
         if (!confirm('¿Estás seguro de eliminar esta categoría? Se eliminarán también sus productos.')) return;
         try {
-            const response = await fetch(`/api/v1/business/menu/categories/${id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories/${id}`, {
                 method: 'DELETE'
             });
             if (response.ok) {

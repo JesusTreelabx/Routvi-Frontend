@@ -44,7 +44,7 @@ export default function ProductsPage() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await fetch('/api/v1/business/profile');
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
             const data = await response.json();
 
             if (data.menu) {
@@ -91,7 +91,7 @@ export default function ProductsPage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const response = await fetch('/api/v1/business/menu/products', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -125,7 +125,7 @@ export default function ProductsPage() {
         setSubmitting(true);
 
         try {
-            const response = await fetch(`/api/v1/business/menu/products/${editingProduct.id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${editingProduct.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -153,7 +153,7 @@ export default function ProductsPage() {
         if (!confirm('¿Estás seguro de eliminar este producto?')) return;
 
         try {
-            const response = await fetch(`/api/v1/business/menu/products/${productId}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${productId}`, {
                 method: 'DELETE'
             });
 
@@ -173,7 +173,7 @@ export default function ProductsPage() {
             );
             setFilteredProducts(updatedProducts);
 
-            const response = await fetch(`/api/v1/business/menu/products/${product.id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${product.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

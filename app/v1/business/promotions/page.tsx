@@ -47,7 +47,7 @@ export default function PromotionsPage() {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('/api/v1/business/profile');
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
             const result = await response.json();
             if (result.menu) {
                 // Flatten products from callbacks
@@ -61,7 +61,7 @@ export default function PromotionsPage() {
 
     const fetchPromotions = async () => {
         try {
-            const response = await fetch('/api/v1/business/promotions');
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions');
             const result = await response.json();
             if (result.data) {
                 setPromotions(result.data);
@@ -106,8 +106,8 @@ export default function PromotionsPage() {
 
         try {
             const url = editingId
-                ? `/api/v1/business/promotions/${editingId}`
-                : '/api/v1/business/promotions';
+                ? `https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions/${editingId}`
+                : 'https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions';
 
             const method = editingId ? 'PUT' : 'POST';
 
@@ -138,7 +138,7 @@ export default function PromotionsPage() {
         if (!deleteId) return;
 
         try {
-            const response = await fetch(`/api/v1/business/promotions/${deleteId}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions/${deleteId}`, {
                 method: 'DELETE'
             });
 
@@ -153,7 +153,7 @@ export default function PromotionsPage() {
 
     const toggleActive = async (promo: Promotion) => {
         try {
-            const response = await fetch(`/api/v1/business/promotions/${promo.id}`, {
+            const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions/${promo.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ active: !promo.active })

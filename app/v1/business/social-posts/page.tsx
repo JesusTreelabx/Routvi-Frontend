@@ -27,7 +27,7 @@ export default function SocialPostsPage() {
 
     const fetchPosts = async () => {
         try {
-            const response = await fetch('/api/v1/business/social-posts');
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/social-posts');
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data.data || []);
@@ -46,7 +46,7 @@ export default function SocialPostsPage() {
         if (!postContent.trim()) return;
         setPosting(true);
         try {
-            const response = await fetch('/api/v1/business/social-posts', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/social-posts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

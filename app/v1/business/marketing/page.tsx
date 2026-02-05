@@ -32,7 +32,7 @@ export default function MarketingPage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('/api/v1/business/profile');
+                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
                 const data = await response.json();
 
                 // Flatten products from categories
@@ -63,7 +63,7 @@ export default function MarketingPage() {
         if (!selectedSpecial) return;
         setSettingSpecial(true);
         try {
-            const response = await fetch('/api/v1/business/daily-special/set', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/daily-special/set', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -89,7 +89,7 @@ export default function MarketingPage() {
         if (!postContent.trim()) return;
         setPosting(true);
         try {
-            const response = await fetch('/api/v1/business/social-posts', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/social-posts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -114,7 +114,7 @@ export default function MarketingPage() {
     const handlePublishSite = async () => {
         setPublishing(true);
         try {
-            const response = await fetch('/api/v1/business/publish', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/publish', {
                 method: 'POST'
             });
 

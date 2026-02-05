@@ -27,7 +27,7 @@ export default function PublishPage() {
     const handlePublishSite = async () => {
         setPublishing(true);
         try {
-            const response = await fetch('/api/v1/business/publish', {
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/publish', {
                 method: 'POST'
             });
 

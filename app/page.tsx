@@ -167,14 +167,14 @@ export default function Home() {
           const fetchPromos = async () => {
             try {
               // Fetch Promos
-              const res = await fetch('/api/v1/business/promotions');
+              const res = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions');
               const data = await res.json();
               if (data.data) {
                 setActivePromos(data.data.filter((p: any) => p.active));
               }
 
               // Fetch Business Name
-              const profileRes = await fetch('/api/v1/business/profile');
+              const profileRes = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
               const profileData = await profileRes.json();
               setBusinessName(profileData.name || "Tu Negocio");
 
