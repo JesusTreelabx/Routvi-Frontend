@@ -1,3 +1,9 @@
+export const dynamic = 'force-static';
+
+export function generateStaticParams() {
+    return [{ categoryId: 'default' }];
+}
+
 'use client';
 
 import { useState, useEffect, use } from 'react';

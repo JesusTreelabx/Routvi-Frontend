@@ -1,3 +1,9 @@
+export const dynamic = 'force-static';
+
+export function generateStaticParams() {
+    return [{ slug: 'default' }];
+}
+
 import { notFound } from 'next/navigation';
 import BusinessHeader from '@/components/business/BusinessHeader';
 import PromotionsBanner from '@/components/business/PromotionsBanner';
