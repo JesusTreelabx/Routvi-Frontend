@@ -33,20 +33,30 @@ export default function DailySpecialPage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
-                const data = await response.json();
+                const [profileRes, prodsRes, catsRes] = await Promise.all([
+                    fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile'),
+                    fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products'),
+                    fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories')
+                ]);
+
+                const profile = await profileRes.json();
+                const products = await prodsRes.json();
+                const categories = await catsRes.json();
 
                 let allProducts: any[] = [];
-                if (data.menu) {
-                    data.menu.forEach((cat: any) => {
-                        cat.products.forEach((p: any) => {
-                            allProducts.push({ ...p, categoryName: cat.category });
-                        });
+                if (Array.isArray(products) && Array.isArray(categories)) {
+                    allProducts = products.map((p: any) => {
+                        const cat = categories.find((c: any) => c.ID === p.category_id || c.ID === p.categoryId);
+                        return {
+                            ...p,
+                            id: p.ID,
+                            categoryName: cat?.name || 'Sin categoría'
+                        };
                     });
                 }
                 setProducts(allProducts);
-                // Load existing specials
-                setDailySpecials(data.dailySpecials || {});
+                // Load existing specials from profile
+                setDailySpecials(profile.dailySpecials || {});
 
             } catch (error) {
                 console.error("Error loading products:", error);

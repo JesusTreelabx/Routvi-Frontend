@@ -47,12 +47,10 @@ export default function PromotionsPage() {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
-            const result = await response.json();
-            if (result.menu) {
-                // Flatten products from callbacks
-                const allProducts = result.menu.flatMap((cat: any) => cat.products);
-                setProducts(allProducts);
+            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products');
+            const products = await response.json();
+            if (Array.isArray(products)) {
+                setProducts(products.map((p: any) => ({ ...p, id: p.ID })));
             }
         } catch (error) {
             console.error("Error fetching products:", error);
