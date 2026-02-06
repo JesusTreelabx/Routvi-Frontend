@@ -70,7 +70,7 @@ export default function BusinessMenuCategoriesPage() {
                     const initialExpanded: Record<string, boolean> = {};
                     catsWithProducts.forEach((cat: any) => {
                         initialValues[cat.id] = cat.category;
-                        initialExpanded[cat.id] = true; // All categories expanded by default
+                        initialExpanded[cat.id] = false; // All categories collapsed by default
                     });
                     setEditingValues(initialValues);
                     setExpandedCategories(initialExpanded);
