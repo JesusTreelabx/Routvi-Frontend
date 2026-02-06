@@ -41,15 +41,28 @@ export default function ProductsPage() {
     const [submitting, setSubmitting] = useState(false);
 
     // Fetch initial data
+    // Fetch initial data
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
-            const data = await response.json();
+            const [catsRes, prodsRes] = await Promise.all([
+                fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories'),
+                fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products')
+            ]);
 
-            if (data.menu) {
-                setCategories(data.menu);
-                // Initial flatten of products if needed, or just rely on useEffect filtering
+            const cats = await catsRes.json();
+            const prods = await prodsRes.json();
+
+            if (Array.isArray(cats)) {
+                const catsWithProducts = cats.map((cat: any) => ({
+                    ...cat,
+                    id: cat.ID, // Ensure ID mismatch handled
+                    category: cat.name,
+                    products: Array.isArray(prods)
+                        ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID)
+                        : []
+                }));
+                setCategories(catsWithProducts);
             }
         } catch (error) {
             console.error("Error fetching menu:", error);

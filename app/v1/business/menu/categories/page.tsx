@@ -39,9 +39,25 @@ export default function BusinessMenuCategoriesPage() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
-                const data = await response.json();
-                setCategories(data.menu || []);
+                const [catsRes, prodsRes] = await Promise.all([
+                    fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/categories'),
+                    fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products')
+                ]);
+
+                const cats = await catsRes.json();
+                const prods = await prodsRes.json();
+
+                if (Array.isArray(cats)) {
+                    // Map products to categories
+                    const catsWithProducts = cats.map((cat: any) => ({
+                        ...cat,
+                        category: cat.name, // Frontend expects 'category' property
+                        products: Array.isArray(prods)
+                            ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID)
+                            : []
+                    }));
+                    setCategories(catsWithProducts);
+                }
             } catch (error) {
                 console.error("Error fetching categories:", error);
             } finally {

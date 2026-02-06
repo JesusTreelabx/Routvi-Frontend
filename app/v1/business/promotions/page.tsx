@@ -63,7 +63,9 @@ export default function PromotionsPage() {
         try {
             const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions');
             const result = await response.json();
-            if (result.data) {
+            if (Array.isArray(result)) {
+                setPromotions(result);
+            } else if (result.data) {
                 setPromotions(result.data);
             }
         } catch (error) {

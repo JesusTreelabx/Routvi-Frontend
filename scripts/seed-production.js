@@ -66,24 +66,63 @@ async function seedProduction() {
             for (const cat of localData.menu) {
                 console.log(`   📂 Creating Category: ${cat.category}`);
                 
-                // Create Category
-                const newCatRes = await request('/business/menu/categories', 'POST', { name: cat.category });
-                const newCatId = newCatRes.data.id;
+                let newCatId;
+                try {
+                    const newCatRes = await request('/business/menu/categories', 'POST', { name: cat.category });
+                    newCatId = newCatRes.data.ID || newCatRes.data.id;
+                } catch (err) {
+                    console.log('DEBUG Caught Error:', err.message);
+                    if (err.message.includes('409') || err.message.includes('Duplicate')) {
+                         console.log(`      ⚠️ Category '${cat.category}' exists. Fetching ID...`);
+                         // Fallback: Fetch all categories and find match
+                         const allCats = await request('/business/menu/categories');
+                         const existingCat = allCats.find(c => c.name === cat.category);
+                         if (existingCat) {
+                             newCatId = existingCat.ID || existingCat.id;
+                         } else {
+                             throw new Error(`Could not find existing category '${cat.category}' even though 409 returned.`);
+                         }
+                    } else {
+                        throw err;
+                    }
+                }
                 categoryMap[cat.id] = newCatId;
 
                 // Create Products for this Category
                 if (cat.products && Array.isArray(cat.products)) {
                     for (const prod of cat.products) {
                         console.log(`      🍔 Creating Product: ${prod.name}`);
-                        const newProdRes = await request('/business/menu/products', 'POST', {
-                            categoryId: newCatId,
-                            name: prod.name,
-                            description: prod.description,
-                            price: prod.price,
-                            image: prod.image
-                        });
-                        const newProdId = newProdRes.data.id;
-                        productMap[prod.id] = newProdId;
+                        let newProdId;
+                        try {
+                            const newProdRes = await request('/business/menu/products', 'POST', {
+                                categoryId: newCatId,
+                                name: prod.name,
+                                description: prod.description,
+                                price: prod.price,
+                                image: prod.image
+                            });
+                            newProdId = newProdRes.data.ID || newProdRes.data.id;
+                        } catch (err) {
+                             if (err.message.includes('409') || err.message.includes('Duplicate')) {
+                                console.log(`      ⚠️ Product '${prod.name}' exists. Skipping...`);
+                                // Ideally we get the ID, but for seeding we might just verify or skip.
+                                // If we skip, we might miss the ID mapping for daily specials later.
+                                // Let's try to fetch it to keep mapping valid.
+                                const allProds = await request(`/business/menu/products?categoryId=${newCatId}`); // Assuming API supports filtering or returns all
+                                // Actually my API returns ALL products for all categories usually or strict list?
+                                // The endpoint /business/menu/products usually lists all.
+                                // Let's just create a quick search helper or simplified skip.
+                                // If mapped ID is missing, daily specials might fail.
+                                // Let's try to find it in the products of the category if possible.
+                                // My API only had getAllProducts right?
+                                const allProducts = await request('/business/menu/products');
+                                const existing = allProducts.find(p => p.name === prod.name && p.category_id === newCatId);
+                                if (existing) newProdId = existing.ID;
+                            } else {
+                                throw err;
+                            }
+                        }
+                        if (newProdId) productMap[prod.id] = newProdId;
 
                         // Availability Check (Default is likely true, but if false we need to update)
                         if (prod.available === false) {
