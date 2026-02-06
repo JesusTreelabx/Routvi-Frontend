@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -40,7 +39,6 @@ export default function ProductsPage() {
         categoryId: ''
     });
     const [submitting, setSubmitting] = useState(false);
-    const searchParams = useSearchParams();
 
     // Fetch initial data
     // Fetch initial data
@@ -112,21 +110,25 @@ export default function ProductsPage() {
 
     // Auto-scroll to product if productId is in URL
     useEffect(() => {
-        const productId = searchParams.get('productId');
-        if (productId && filteredProducts.length > 0) {
-            setTimeout(() => {
-                const element = document.getElementById(`product-${productId}`);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Add a brief highlight effect
-                    element.classList.add('ring-2', 'ring-emerald-500', 'ring-offset-2');
-                    setTimeout(() => {
-                        element.classList.remove('ring-2', 'ring-emerald-500', 'ring-offset-2');
-                    }, 2000);
-                }
-            }, 500); // Small delay to ensure DOM is ready
+        // Use window.location instead of useSearchParams to avoid Suspense requirement
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('productId');
+            if (productId && filteredProducts.length > 0) {
+                setTimeout(() => {
+                    const element = document.getElementById(`product-${productId}`);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Add a brief highlight effect
+                        element.classList.add('ring-2', 'ring-emerald-500', 'ring-offset-2');
+                        setTimeout(() => {
+                            element.classList.remove('ring-2', 'ring-emerald-500', 'ring-offset-2');
+                        }, 2000);
+                    }
+                }, 500); // Small delay to ensure DOM is ready
+            }
         }
-    }, [searchParams, filteredProducts]);
+    }, [filteredProducts]);
 
     // Actions
     const handleCreate = async (e: React.FormEvent) => {
