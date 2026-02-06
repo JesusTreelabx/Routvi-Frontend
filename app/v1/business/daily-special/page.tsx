@@ -49,8 +49,9 @@ export default function DailySpecialPage() {
                         const cat = categories.find((c: any) => c.ID === p.category_id || c.ID === p.categoryId);
                         return {
                             ...p,
-                            id: p.ID,
-                            categoryName: cat?.name || 'Sin categoría'
+                            id: p.ID || p.id,
+                            categoryName: cat?.name || 'Sin categoría',
+                            available: p.is_available !== undefined ? p.is_available : (p.available !== undefined ? p.available : true)
                         };
                     });
                 }
