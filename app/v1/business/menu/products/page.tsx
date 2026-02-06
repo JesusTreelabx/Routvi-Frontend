@@ -56,20 +56,26 @@ export default function ProductsPage() {
             if (Array.isArray(cats)) {
                 const catsWithProducts = cats.map((cat: any) => ({
                     ...cat,
-                    id: cat.ID, // Ensure ID mismatch handled
-                    category: cat.name,
+                    id: cat.ID || cat.id, // Ensure consistent ID property
+                    category: cat.name || 'Sin nombre',
                     products: Array.isArray(prods)
                         ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID).map((p: any) => ({
                             ...p,
+                            id: p.ID || p.id, // Normalize product ID too
                             available: p.is_available !== undefined ? p.is_available : true
                         }))
                         : []
                 }));
                 setCategories(catsWithProducts);
+            } else {
+                console.error('Categories response is not an array:', cats);
+                setCategories([]);
             }
         } catch (error) {
             console.error("Error fetching menu:", error);
+            setCategories([]);
         } finally {
+            // Always set loading to false
             setLoading(false);
         }
     };
@@ -120,16 +126,16 @@ export default function ProductsPage() {
             });
 
             if (response.ok) {
-                const result = await response.json();
-                // If there are other fields like price/desc, we need to update them immediately via PUT
-                // or ensure POST accepts them. The current POST implementation primarily takes name/category.
-                // For simplicity/robustness with current API, update local state and re-fetch.
                 await fetchData();
                 setIsCreateModalOpen(false);
                 resetForm();
+            } else {
+                console.error('Failed to create product:', await response.text());
+                alert('Error al crear el producto');
             }
         } catch (error) {
             console.error("Error creating product:", error);
+            alert('Error al crear el producto');
         } finally {
             setSubmitting(false);
         }
@@ -157,9 +163,13 @@ export default function ProductsPage() {
                 setEditingProduct(null);
                 setIsCreateModalOpen(false);
                 resetForm();
+            } else {
+                console.error('Failed to update product:', await response.text());
+                alert('Error al actualizar el producto');
             }
         } catch (error) {
             console.error("Error updating product:", error);
+            alert('Error al actualizar el producto');
         } finally {
             setSubmitting(false);
         }
@@ -175,34 +185,47 @@ export default function ProductsPage() {
 
             if (response.ok) {
                 await fetchData();
+            } else {
+                console.error('Failed to delete product:', await response.text());
+                alert('Error al eliminar el producto');
             }
         } catch (error) {
             console.error("Error deleting product:", error);
+            alert('Error al eliminar el producto');
         }
     };
 
     const handleToggleAvailability = async (product: any) => {
         try {
-            // Optimistic update
-            const updatedProducts = filteredProducts.map(p =>
-                p.id === product.id ? { ...p, available: !p.available } : p
+            // Optimistic update - update both states
+            const newAvailability = !product.available;
+
+            // Update categories state (main source of truth)
+            setCategories(prevCategories =>
+                prevCategories.map(cat => ({
+                    ...cat,
+                    products: cat.products.map((p: any) =>
+                        p.id === product.id ? { ...p, available: newAvailability } : p
+                    )
+                }))
             );
-            setFilteredProducts(updatedProducts);
 
             const response = await fetch(`https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/menu/products/${product.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    is_available: !product.available
+                    is_available: newAvailability
                 })
             });
 
             if (!response.ok) {
                 // Revert if failed
+                console.error('Failed to toggle availability:', await response.text());
                 await fetchData();
             }
         } catch (error) {
             console.error("Error toggling availability:", error);
+            // Revert on error
             await fetchData();
         }
     };
