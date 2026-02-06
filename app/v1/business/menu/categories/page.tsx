@@ -250,7 +250,7 @@ export default function BusinessMenuCategoriesPage() {
                                 <div className="bg-emerald-700 px-6 py-4 flex items-center justify-between">
                                     <input
                                         id={`cat-input-${cat.id}`}
-                                        value={editingValues[cat.id] || cat.category}
+                                        value={editingValues[cat.id] ?? cat.category}
                                         onChange={(e) => {
                                             setEditingValues({ ...editingValues, [cat.id]: e.target.value });
                                         }}
