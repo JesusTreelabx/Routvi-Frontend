@@ -34,6 +34,7 @@ export default function BusinessMenuCategoriesPage() {
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
+    const [editingValues, setEditingValues] = useState<Record<string, string>>({});
     const [message, setMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
 
     useEffect(() => {
@@ -51,12 +52,19 @@ export default function BusinessMenuCategoriesPage() {
                     // Map products to categories
                     const catsWithProducts = cats.map((cat: any) => ({
                         ...cat,
+                        id: cat.ID || cat.id, // Ensure consistent ID property
                         category: cat.name, // Frontend expects 'category' property
                         products: Array.isArray(prods)
                             ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID)
                             : []
                     }));
                     setCategories(catsWithProducts);
+                    // Initialize editing values
+                    const initialValues: Record<string, string> = {};
+                    catsWithProducts.forEach((cat: any) => {
+                        initialValues[cat.id] = cat.category;
+                    });
+                    setEditingValues(initialValues);
                 }
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -82,7 +90,9 @@ export default function BusinessMenuCategoriesPage() {
             });
             if (response.ok) {
                 const result = await response.json();
-                setCategories([...categories, result.data]);
+                const newCat = { ...result.data, id: result.data.ID || result.data.id, category: result.data.name };
+                setCategories([...categories, newCat]);
+                setEditingValues({ ...editingValues, [newCat.id]: newCat.category });
                 showMessage("Categoría creada", "success");
 
                 // Custom slow smooth scroll
@@ -219,7 +229,10 @@ export default function BusinessMenuCategoriesPage() {
                                 <div className="bg-emerald-700 px-6 py-4 flex items-center justify-between">
                                     <input
                                         id={`cat-input-${cat.id}`}
-                                        defaultValue={cat.category}
+                                        value={editingValues[cat.id] || cat.category}
+                                        onChange={(e) => {
+                                            setEditingValues({ ...editingValues, [cat.id]: e.target.value });
+                                        }}
                                         onBlur={(e) => {
                                             if (e.target.value !== cat.category) {
                                                 updateCategoryName(cat.id, e.target.value);
