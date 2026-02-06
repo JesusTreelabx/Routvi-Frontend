@@ -53,7 +53,7 @@ export default function BusinessMenuCategoriesPage() {
                     const catsWithProducts = cats.map((cat: any) => ({
                         ...cat,
                         id: cat.ID || cat.id, // Ensure consistent ID property
-                        category: cat.name, // Frontend expects 'category' property
+                        category: cat.name || 'Sin nombre', // Frontend expects 'category' property
                         products: Array.isArray(prods)
                             ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID)
                             : []
@@ -65,10 +65,15 @@ export default function BusinessMenuCategoriesPage() {
                         initialValues[cat.id] = cat.category;
                     });
                     setEditingValues(initialValues);
+                } else {
+                    console.error('Categories response is not an array:', cats);
+                    setCategories([]);
                 }
             } catch (error) {
                 console.error("Error fetching categories:", error);
+                setCategories([]); // Set empty array on error
             } finally {
+                // Always set loading to false, no matter what
                 setLoading(false);
             }
         };
@@ -90,9 +95,12 @@ export default function BusinessMenuCategoriesPage() {
             });
             if (response.ok) {
                 const result = await response.json();
-                const newCat = { ...result.data, id: result.data.ID || result.data.id, category: result.data.name };
-                setCategories([...categories, newCat]);
-                setEditingValues({ ...editingValues, [newCat.id]: newCat.category });
+                const newCat = { ...result.data, id: result.data.ID || result.data.id, category: result.data.name || 'Nueva Categoría' };
+
+                // Use functional updates to avoid race conditions
+                setCategories(prevCategories => [...prevCategories, newCat]);
+                setEditingValues(prevValues => ({ ...prevValues, [newCat.id]: newCat.category }));
+
                 showMessage("Categoría creada", "success");
 
                 // Custom slow smooth scroll
@@ -132,8 +140,11 @@ export default function BusinessMenuCategoriesPage() {
                         requestAnimationFrame(animation);
                     }
                 }, 100);
+            } else {
+                showMessage("Error al crear categoría", "error");
             }
         } catch (error) {
+            console.error('Error creating category:', error);
             showMessage("Error al crear categoría", "error");
         } finally {
             setAdding(false);
@@ -148,10 +159,16 @@ export default function BusinessMenuCategoriesPage() {
                 body: JSON.stringify({ name })
             });
             if (response.ok) {
-                setCategories(categories.map(cat => cat.id === id ? { ...cat, category: name } : cat));
+                // Use functional update
+                setCategories(prevCategories =>
+                    prevCategories.map(cat => cat.id === id ? { ...cat, category: name } : cat)
+                );
                 showMessage("Cambios guardados", "success");
+            } else {
+                showMessage("Error al actualizar", "error");
             }
         } catch (error) {
+            console.error('Error updating category:', error);
             showMessage("Error al actualizar", "error");
         }
     };
@@ -163,10 +180,14 @@ export default function BusinessMenuCategoriesPage() {
                 method: 'DELETE'
             });
             if (response.ok) {
-                setCategories(categories.filter(cat => cat.id !== id));
+                // Use functional update
+                setCategories(prevCategories => prevCategories.filter(cat => cat.id !== id));
                 showMessage("Categoría eliminada", "success");
+            } else {
+                showMessage("Error al eliminar", "error");
             }
         } catch (error) {
+            console.error('Error deleting category:', error);
             showMessage("Error al eliminar", "error");
         }
     };
