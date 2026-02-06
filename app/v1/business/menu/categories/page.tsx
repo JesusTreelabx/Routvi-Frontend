@@ -97,7 +97,7 @@ export default function BusinessMenuCategoriesPage() {
 
                 // Custom slow smooth scroll
                 setTimeout(() => {
-                    const element = document.getElementById(`category-${result.data.id}`);
+                    const element = document.getElementById(`category-${newCat.id}`);
                     if (element) {
                         const targetPosition = element.getBoundingClientRect().top + window.scrollY - (window.innerHeight / 2) + (element.clientHeight / 2);
                         const startPosition = window.scrollY;
