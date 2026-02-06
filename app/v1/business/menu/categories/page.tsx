@@ -58,6 +58,10 @@ export default function BusinessMenuCategoriesPage() {
                             ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID)
                             : []
                     }));
+
+                    // Sort categories alphabetically by name
+                    catsWithProducts.sort((a, b) => a.category.localeCompare(b.category));
+
                     setCategories(catsWithProducts);
                     // Initialize editing values
                     const initialValues: Record<string, string> = {};
@@ -298,7 +302,7 @@ export default function BusinessMenuCategoriesPage() {
                                                     {product.description || "Sin descripción"}
                                                 </p>
                                                 <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
-                                                    <div className={`w-4 h-4 rounded flex items-center justify-center ${product.available ? 'bg-purple-600' : 'bg-gray-300'}`}>
+                                                    <div className={`w-4 h-4 rounded flex items-center justify-center ${product.available ? 'bg-emerald-600' : 'bg-gray-300'}`}>
                                                         {product.available && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
                                                     </div>
                                                     <span className="text-xs font-semibold text-gray-500 uppercase">{product.available ? 'Disponible' : 'Agotado'}</span>
@@ -314,7 +318,7 @@ export default function BusinessMenuCategoriesPage() {
                                                 <div className="flex flex-col items-end">
                                                     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Precio</span>
                                                     <div className="border border-emerald-200 bg-white text-emerald-700 font-bold px-3 py-1.5 rounded-lg min-w-[80px] text-center shadow-sm">
-                                                        {product.price}
+                                                        ${product.price}
                                                     </div>
                                                 </div>
                                             </div>
