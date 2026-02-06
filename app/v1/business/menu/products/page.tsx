@@ -365,7 +365,7 @@ export default function ProductsPage() {
                                 <div className="p-5 flex-1 flex flex-col">
                                     <div className="flex justify-between items-start mb-2">
                                         <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-1">{product.name}</h3>
-                                        <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-sm">{product.price}</span>
+                                        <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-sm">${product.price}</span>
                                     </div>
                                     <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-1">{product.description || "Sin descripción"}</p>
 
