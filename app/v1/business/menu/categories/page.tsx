@@ -307,7 +307,7 @@ export default function BusinessMenuCategoriesPage() {
                                         {cat.products && cat.products.map((product: any) => (
                                             <Link
                                                 key={product.id}
-                                                href={`/v1/business/menu/products?productId=${product.id}`}
+                                                href={`/v1/business/menu/products?category=${cat.id}&productId=${product.id}`}
                                                 className="block"
                                             >
                                                 <div className="bg-white border border-gray-100 rounded-xl p-3 flex items-center gap-4 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-emerald-300">

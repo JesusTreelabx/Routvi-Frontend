@@ -84,25 +84,36 @@ export default function ProductsPage() {
         fetchData();
     }, []);
 
+    // Auto-select category from URL parameter
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const categoryParam = params.get('category');
+            if (categoryParam && categories.length > 0) {
+                setSelectedCategory(categoryParam);
+            }
+        }
+    }, [categories]);
+
     // Filter logic
     useEffect(() => {
         let prods: any[] = [];
         categories.forEach(cat => {
-            cat.products.forEach((p: any) => {
-                prods.push({ ...p, categoryName: cat.category, categoryId: cat.id });
-            });
+            if (cat.products) {
+                prods.push(...cat.products.map((p: any) => ({ ...p, categoryName: cat.category })));
+            }
         });
 
+        // Filter by category
         if (selectedCategory !== 'all') {
-            prods = prods.filter(p => p.categoryId === selectedCategory);
+            const cat = categories.find(c => c.id === selectedCategory);
+            if (cat && cat.products) {
+                prods = cat.products.map((p: any) => ({ ...p, categoryName: cat.category }));
+            }
         }
 
         if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            prods = prods.filter(p =>
-                p.name.toLowerCase().includes(query) ||
-                p.description.toLowerCase().includes(query)
-            );
+            prods = prods.filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()));
         }
 
         setFilteredProducts(prods);
