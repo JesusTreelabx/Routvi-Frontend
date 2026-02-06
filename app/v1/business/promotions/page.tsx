@@ -111,20 +111,28 @@ export default function PromotionsPage() {
 
             const method = editingId ? 'PUT' : 'POST';
 
+            console.log('Saving promotion:', { method, url, formData });
+
             const response = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
 
+            console.log('Response status:', response.status);
+            const responseData = await response.json();
+            console.log('Response data:', responseData);
+
             if (response.ok) {
                 setIsModalOpen(false);
-                fetchPromotions();
+                await fetchPromotions();
             } else {
-                alert('Error al guardar la promoción');
+                console.error('Server error:', responseData);
+                alert(`Error al guardar la promoción: ${responseData.error || 'Error desconocido'}`);
             }
         } catch (error) {
             console.error("Error saving promotion:", error);
+            alert('Error de conexión al guardar la promoción');
         } finally {
             setSaving(false);
         }

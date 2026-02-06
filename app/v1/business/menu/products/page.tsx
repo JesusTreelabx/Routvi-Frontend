@@ -59,7 +59,10 @@ export default function ProductsPage() {
                     id: cat.ID, // Ensure ID mismatch handled
                     category: cat.name,
                     products: Array.isArray(prods)
-                        ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID)
+                        ? prods.filter((p: any) => p.category_id === cat.ID || p.categoryId === cat.ID).map((p: any) => ({
+                            ...p,
+                            available: p.is_available !== undefined ? p.is_available : true
+                        }))
                         : []
                 }));
                 setCategories(catsWithProducts);
@@ -190,7 +193,7 @@ export default function ProductsPage() {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    available: !product.available
+                    is_available: !product.available
                 })
             });
 
