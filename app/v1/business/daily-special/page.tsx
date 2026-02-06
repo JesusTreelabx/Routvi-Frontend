@@ -215,8 +215,12 @@ export default function DailySpecialPage() {
                                                                 <div className="text-left">
                                                                     <div className="font-bold text-gray-900 text-sm">{p.name}</div>
                                                                     <div className="flex items-center gap-2">
-                                                                        <div className="text-xs font-medium text-gray-500">{p.price}</div>
-                                                                        {!p.available && <span className="text-[10px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded font-bold">Agotado</span>}
+                                                                        <div className="text-xs font-medium text-gray-500">${p.price}</div>
+                                                                        {p.available ? (
+                                                                            <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-bold">Disponible</span>
+                                                                        ) : (
+                                                                            <span className="text-[10px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded font-bold">Agotado</span>
+                                                                        )}
                                                                     </div>
                                                                 </div>
                                                             </div>
