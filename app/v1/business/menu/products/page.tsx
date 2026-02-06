@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -39,6 +40,7 @@ export default function ProductsPage() {
         categoryId: ''
     });
     const [submitting, setSubmitting] = useState(false);
+    const searchParams = useSearchParams();
 
     // Fetch initial data
     // Fetch initial data
@@ -107,6 +109,24 @@ export default function ProductsPage() {
 
         setFilteredProducts(prods);
     }, [categories, selectedCategory, searchQuery]);
+
+    // Auto-scroll to product if productId is in URL
+    useEffect(() => {
+        const productId = searchParams.get('productId');
+        if (productId && filteredProducts.length > 0) {
+            setTimeout(() => {
+                const element = document.getElementById(`product-${productId}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add a brief highlight effect
+                    element.classList.add('ring-2', 'ring-emerald-500', 'ring-offset-2');
+                    setTimeout(() => {
+                        element.classList.remove('ring-2', 'ring-emerald-500', 'ring-offset-2');
+                    }, 2000);
+                }
+            }, 500); // Small delay to ensure DOM is ready
+        }
+    }, [searchParams, filteredProducts]);
 
     // Actions
     const handleCreate = async (e: React.FormEvent) => {
@@ -339,7 +359,7 @@ export default function ProductsPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredProducts.map(product => (
-                            <Card key={product.id} className="group isolate overflow-hidden border border-gray-200 border-t-4 border-t-emerald-500 shadow-md hover:shadow-xl transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
+                            <Card id={`product-${product.id}`} key={product.id} className="group isolate overflow-hidden border border-gray-200 border-t-4 border-t-emerald-500 shadow-md hover:shadow-xl transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
                                 <div className="relative h-48 bg-gray-200 overflow-hidden rounded-t-xl">
                                     {product.image ? (
                                         <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />

@@ -15,7 +15,8 @@ import {
     ArrowUpDown,
     Menu as MenuIcon,
     PlusCircle,
-    Check
+    Check,
+    ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -35,6 +36,7 @@ export default function BusinessMenuCategoriesPage() {
     const [adding, setAdding] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [editingValues, setEditingValues] = useState<Record<string, string>>({});
+    const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
     const [message, setMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
 
     useEffect(() => {
@@ -65,10 +67,13 @@ export default function BusinessMenuCategoriesPage() {
                     setCategories(catsWithProducts);
                     // Initialize editing values
                     const initialValues: Record<string, string> = {};
+                    const initialExpanded: Record<string, boolean> = {};
                     catsWithProducts.forEach((cat: any) => {
                         initialValues[cat.id] = cat.category;
+                        initialExpanded[cat.id] = true; // All categories expanded by default
                     });
                     setEditingValues(initialValues);
+                    setExpandedCategories(initialExpanded);
                 } else {
                     console.error('Categories response is not an array:', cats);
                     setCategories([]);
@@ -196,6 +201,13 @@ export default function BusinessMenuCategoriesPage() {
         }
     };
 
+    const toggleCategory = (id: string) => {
+        setExpandedCategories(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }));
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -252,20 +264,29 @@ export default function BusinessMenuCategoriesPage() {
                             <Card id={`category-${cat.id}`} key={cat.id} className="border-0 shadow-lg rounded-xl bg-white overflow-hidden flex flex-col">
                                 {/* Green Header */}
                                 <div className="bg-emerald-700 px-6 py-4 flex items-center justify-between">
-                                    <input
-                                        id={`cat-input-${cat.id}`}
-                                        value={editingValues[cat.id] ?? cat.category}
-                                        onChange={(e) => {
-                                            setEditingValues({ ...editingValues, [cat.id]: e.target.value });
-                                        }}
-                                        onBlur={(e) => {
-                                            if (e.target.value !== cat.category) {
-                                                updateCategoryName(cat.id, e.target.value);
-                                            }
-                                        }}
-                                        className="bg-transparent border-0 font-extrabold text-white text-xl tracking-tight focus:ring-0 outline-none cursor-pointer hover:bg-white/10 focus:bg-white/10 rounded px-2 -ml-2 transition-colors placeholder-white/50 w-full max-w-md"
-                                        placeholder="NOMBRE CATEGORÍA"
-                                    />
+                                    <div className="flex items-center gap-3 flex-1">
+                                        <button
+                                            onClick={() => toggleCategory(cat.id)}
+                                            className="text-white/90 hover:text-white transition-colors"
+                                            title={expandedCategories[cat.id] ? "Colapsar" : "Expandir"}
+                                        >
+                                            <ChevronDown className={`w-5 h-5 transition-transform ${expandedCategories[cat.id] ? 'rotate-0' : '-rotate-90'}`} />
+                                        </button>
+                                        <input
+                                            id={`cat-input-${cat.id}`}
+                                            value={editingValues[cat.id] ?? cat.category}
+                                            onChange={(e) => {
+                                                setEditingValues({ ...editingValues, [cat.id]: e.target.value });
+                                            }}
+                                            onBlur={(e) => {
+                                                if (e.target.value !== cat.category) {
+                                                    updateCategoryName(cat.id, e.target.value);
+                                                }
+                                            }}
+                                            className="bg-transparent border-0 font-extrabold text-white text-xl tracking-tight focus:ring-0 outline-none cursor-pointer hover:bg-white/10 focus:bg-white/10 rounded px-2 -ml-2 transition-colors placeholder-white/50 w-full max-w-md"
+                                            placeholder="NOMBRE CATEGORÍA"
+                                        />
+                                    </div>
                                     <div className="flex items-center gap-3">
                                         <button
                                             onClick={() => document.getElementById(`cat-input-${cat.id}`)?.focus()}
@@ -280,61 +301,49 @@ export default function BusinessMenuCategoriesPage() {
                                     </div>
                                 </div>
 
-                                {/* Card Body: Products List */}
-                                <div className="p-6 space-y-4 bg-gray-50/50">
-                                    {cat.products && cat.products.map((product: any) => (
-                                        <div key={product.id} className="bg-white border border-gray-100 rounded-xl p-3 flex flex-col md:flex-row items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                                            {/* Image */}
-                                            <div className="w-20 h-20 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-                                                {product.image ? (
-                                                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-gray-300">
-                                                        <Tag className="w-8 h-8" />
+                                {/* Card Body: Products List - Collapsible */}
+                                {expandedCategories[cat.id] && (
+                                    <div className="p-6 space-y-4 bg-gray-50/50">
+                                        {cat.products && cat.products.map((product: any) => (
+                                            <Link
+                                                key={product.id}
+                                                href={`/v1/business/menu/products?productId=${product.id}`}
+                                                className="block"
+                                            >
+                                                <div className="bg-white border border-gray-100 rounded-xl p-3 flex items-center gap-4 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-emerald-300">
+                                                    {/* Image */}
+                                                    <div className="w-20 h-20 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                                                        {product.image ? (
+                                                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                                                <Tag className="w-8 h-8" />
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                )}
-                                            </div>
 
-                                            {/* Info */}
-                                            <div className="flex-1 text-center md:text-left">
-                                                <h4 className="font-bold text-gray-900 text-lg leading-tight">{product.name}</h4>
-                                                <p className="text-sm text-gray-500 italic mt-1 line-clamp-2 md:line-clamp-1">
-                                                    {product.description || "Sin descripción"}
-                                                </p>
-                                                <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
-                                                    <div className={`w-4 h-4 rounded flex items-center justify-center ${product.available ? 'bg-emerald-600' : 'bg-gray-300'}`}>
-                                                        {product.available && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
-                                                    </div>
-                                                    <span className="text-xs font-semibold text-gray-500 uppercase">{product.available ? 'Disponible' : 'Agotado'}</span>
-                                                </div>
-                                            </div>
-
-                                            {/* Controls */}
-                                            <div className="flex items-center gap-6 mt-2 md:mt-0">
-                                                <div className="text-gray-300 cursor-grab active:cursor-grabbing hover:text-gray-400">
-                                                    <MenuIcon className="w-6 h-6" />
-                                                </div>
-
-                                                <div className="flex flex-col items-end">
-                                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Precio</span>
-                                                    <div className="border border-emerald-200 bg-white text-emerald-700 font-bold px-3 py-1.5 rounded-lg min-w-[80px] text-center shadow-sm">
-                                                        ${product.price}
+                                                    {/* Info */}
+                                                    <div className="flex-1">
+                                                        <h4 className="font-bold text-gray-900 text-lg leading-tight">{product.name}</h4>
+                                                        <p className="text-sm text-gray-500 italic mt-1 line-clamp-2">
+                                                            {product.description || "Sin descripción"}
+                                                        </p>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </Link>
+                                        ))}
+
+                                        {/* Add Product Button (Dashed) */}
+                                        <div className="pt-2">
+                                            <Link href={`/v1/business/menu/products?category=${cat.id}`} className="block">
+                                                <button className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-semibold hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50 transition-all flex items-center justify-center gap-2">
+                                                    <PlusCircle className="w-5 h-5" />
+                                                    Agregar Producto
+                                                </button>
+                                            </Link>
                                         </div>
-                                    ))}
-
-                                    {/* Add Product Button (Dashed) */}
-                                    <div className="pt-2">
-                                        <Link href={`/v1/business/menu/products?category=${cat.id}`} className="block">
-                                            <button className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-semibold hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50 transition-all flex items-center justify-center gap-2">
-                                                <PlusCircle className="w-5 h-5" />
-                                                Agregar Producto
-                                            </button>
-                                        </Link>
                                     </div>
-                                </div>
+                                )}
                             </Card>
                         ))
                     )}
