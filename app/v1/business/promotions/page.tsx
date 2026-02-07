@@ -10,6 +10,7 @@ import { Plus, Tag, Calendar, Edit2, Trash2, X, Save, Percent, Loader2, Megaphon
 
 interface Promotion {
     id: string;
+    ID?: string; // Backend uses ID, frontend uses id
     title: string;
     description: string;
     code: string;
@@ -61,11 +62,21 @@ export default function PromotionsPage() {
         try {
             const response = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions');
             const result = await response.json();
+
+            let promosList = [];
             if (Array.isArray(result)) {
-                setPromotions(result);
+                promosList = result;
             } else if (result.data) {
-                setPromotions(result.data);
+                promosList = result.data;
             }
+
+            // Normalize ID field: backend uses 'ID', frontend uses 'id'
+            const normalizedPromos = promosList.map((p: any) => ({
+                ...p,
+                id: p.id || p.ID
+            }));
+
+            setPromotions(normalizedPromos);
         } catch (error) {
             console.error("Error fetching promotions:", error);
         } finally {
@@ -163,11 +174,20 @@ export default function PromotionsPage() {
             });
 
             if (response.ok) {
-                setPromotions(promotions.filter(p => p.id !== deleteId));
+                // Remove from local state immediately
+                setPromotions(promotions.filter(p => (p.id || p.ID) !== deleteId));
                 setDeleteId(null);
+
+                // Refresh the list from server to ensure sync
+                await fetchPromotions();
+            } else {
+                const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }));
+                console.error('Delete error:', errorData);
+                alert(`Error al eliminar la promoción: ${errorData.error || 'Error desconocido'}`);
             }
         } catch (error) {
             console.error("Error deleting promotion:", error);
+            alert('Error de conexión al eliminar la promoción');
         }
     };
 
