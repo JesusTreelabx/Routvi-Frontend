@@ -120,20 +120,32 @@ export default function PromotionsPage() {
             });
 
             console.log('Response status:', response.status);
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }));
+                console.error('Server error:', errorData);
+                alert(`Error al guardar la promoción: ${errorData.error || 'Error desconocido'}`);
+                setSaving(false);
+                return;
+            }
+
             const responseData = await response.json();
             console.log('Response data:', responseData);
 
-            if (response.ok) {
-                setIsModalOpen(false);
+            // Close modal immediately on success
+            setIsModalOpen(false);
+            setSaving(false);
+
+            // Refresh promotions in background
+            try {
                 await fetchPromotions();
-            } else {
-                console.error('Server error:', responseData);
-                alert(`Error al guardar la promoción: ${responseData.error || 'Error desconocido'}`);
+            } catch (fetchError) {
+                console.error('Error refreshing promotions:', fetchError);
+                // Non-critical error, promotion was saved successfully
             }
         } catch (error) {
             console.error("Error saving promotion:", error);
             alert('Error de conexión al guardar la promoción');
-        } finally {
             setSaving(false);
         }
     };
