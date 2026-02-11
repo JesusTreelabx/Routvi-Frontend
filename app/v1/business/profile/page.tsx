@@ -418,6 +418,11 @@ export default function BusinessProfilePage() {
                                             <span className="text-sm font-bold uppercase tracking-tight">Promociones</span>
                                         </Button>
                                     </Link>
+                                    <Link href="/v1/business/daily-special">
+                                        <Button className="h-9 px-4 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-0 flex items-center gap-2 group">
+                                            <span className="text-sm font-bold uppercase tracking-tight">Platillo del Día</span>
+                                        </Button>
+                                    </Link>
                                 </div>
                             </Card>
                         </section>

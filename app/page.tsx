@@ -51,6 +51,26 @@ export default function Home() {
       setLocation(defaultLoc);
       fetchData(defaultLoc.lat, defaultLoc.lng);
     }
+
+    // Load active promotions count
+    const loadPromosCount = async () => {
+      try {
+        const res = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions');
+        const data = await res.json();
+
+        let promos = [];
+        if (Array.isArray(data)) {
+          promos = data;
+        } else if (data.data && Array.isArray(data.data)) {
+          promos = data.data;
+        }
+
+        setActivePromos(promos.filter((p: any) => p.active));
+      } catch (error) {
+        console.error('Error loading promotions count:', error);
+      }
+    };
+    loadPromosCount();
   }, []);
 
   const fetchData = async (lat: number, lng: number) => {
@@ -169,9 +189,17 @@ export default function Home() {
               // Fetch Promos
               const res = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/promotions');
               const data = await res.json();
-              if (data.data) {
-                setActivePromos(data.data.filter((p: any) => p.active));
+
+              // Handle both direct array and {data: array} response
+              let promos = [];
+              if (Array.isArray(data)) {
+                promos = data;
+              } else if (data.data && Array.isArray(data.data)) {
+                promos = data.data;
               }
+
+              // Filter only active promotions
+              setActivePromos(promos.filter((p: any) => p.active));
 
               // Fetch Business Name
               const profileRes = await fetch('https://bucjudzbm9.us-east-1.awsapprunner.com/api/v1/business/profile');
@@ -188,7 +216,7 @@ export default function Home() {
         className="fixed bottom-24 right-4 z-40 animate-bounce cursor-pointer hover:scale-105 transition-transform"
       >
         <div className="bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-          💸 15 promos activas
+          💸 {activePromos.length} promos activas
         </div>
       </button>
 
